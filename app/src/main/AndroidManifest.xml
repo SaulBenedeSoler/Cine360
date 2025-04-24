@@ -21,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".IndexActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginYRegister.RegisterActivity" android:exported="false"/>
+        <activity android:name=".Activity.Semana.SemanaActivity" android:exported="false"/>
+        <activity android:name=".Activity.Sala.SalaActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginYRegister.LoginActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginYRegister.AdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Pelicula.DetallesActivity" android:exported="false"/>
+        <activity android:name=".Activity.Pelicula.PeliculaActivity" android:exported="false"/>
+        <activity android:name=".Activity.Entrada.EntradaActivity" android:exported="false"/>
     </application>
 
 </manifest>

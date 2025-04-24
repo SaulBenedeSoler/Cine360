@@ -8,8 +8,9 @@ data class Pelicula(
     val fechaLanzamiento: String,
     val duracion: Int,
     val imagen: String,
-    val seaman: String?,
+    val trailer: String,
+    val semana: String?,
     val directores: List<Director> = emptyList(),
     val actores: List<Actor> = emptyList()
-
 )
+
