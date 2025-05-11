@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.cine360.Activity.LoginYRegister.LoginActivity
+import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.Activity.LoginYRegister.RegisterActivity
 import com.example.cine360.DataBase.DataBaseHelper
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        dbHelper.close() // Cerrar la base de datos cuando la actividad se destruye
+        dbHelper.close()
         super.onDestroy()
     }
 }

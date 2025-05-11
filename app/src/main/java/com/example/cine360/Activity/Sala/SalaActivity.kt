@@ -1,5 +1,6 @@
 package com.example.cine360.Activity.Sala
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -152,7 +153,8 @@ class SalaActivity : AppCompatActivity() {
 
             val sala = SalaManager(dbHelper).obtenerSalaPorId(dbHelper.readableDatabase, salaId.toLong())
             val pelicula = movieManager.obtenerPeliculaPorId(movieIdSeleccionado.toInt())
-            val userId = getSharedPreferences("user_prefs", MODE_PRIVATE).getInt("user_id", 1)
+
+            val userId = obtenerIdUsuarioActual(this)
 
             for (position in asientosSeleccionados) {
                 entradaManager.crearEntrada(
@@ -172,4 +174,15 @@ class SalaActivity : AppCompatActivity() {
         }
         asientosSeleccionados.clear()
     }
+
+    private fun obtenerIdUsuarioActual(context: Context): Int {
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+
+        if (usuarioId == -1) {
+            Log.e("SalaActivity", "No se encontró un usuario logueado")
+        }
+        return usuarioId
+    }
 }
+

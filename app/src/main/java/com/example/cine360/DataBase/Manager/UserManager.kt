@@ -11,7 +11,6 @@ class UserManager(private val context: Context) {
     private val dbHelper = DataBaseHelper(context)
 
     init {
-
         checkAndCreateDefaultAdmin()
     }
 
@@ -88,6 +87,34 @@ class UserManager(private val context: Context) {
         cursor.close()
         db.close()
         return Pair(exists, isAdmin)
+    }
+
+    fun getUserId(username: String): Int {
+        val db = dbHelper.readableDatabase
+        var userId = -1
+        try {
+            val cursor = db.query(
+                DataBaseHelper.TABLE_USERS,
+                arrayOf(DataBaseHelper.COLUMN_ID),
+                "${DataBaseHelper.COLUMN_USERNAME} = ?",
+                arrayOf(username),
+                null, null, null
+            )
+
+            if (cursor.moveToFirst()) {
+                val idIndex = cursor.getColumnIndex(DataBaseHelper.COLUMN_ID)
+                if (idIndex != -1) {
+                    userId = cursor.getInt(idIndex)
+                }
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            Log.e("UserManager", "Error getting user ID: ${e.message}")
+
+        } finally {
+            db.close()
+        }
+        return userId
     }
 
 

@@ -37,7 +37,7 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
             salas
         }
 
-    // Nueva función para buscar salas por película, horario y nombre
+
     fun obtenerSalasPorPeliculaYHorarioYSala(peliculaId: Int, horario: String, salaNombre: String): List<Sala> =
         dbHelper.readableDatabase.use { readableDatabase ->
             Log.d(TAG, "Buscando salas para peliculaId: $peliculaId, horario: $horario, sala: $salaNombre")
@@ -191,7 +191,7 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
         return salas
     }
 
-    // Sobrecarga para usar con writableDatabase directamente desde una instancia
+
     fun actualizarAsientos(db: SQLiteDatabase, salaId: Long, asientos: String): Int {
         val values = ContentValues().apply {
             put(DataBaseHelper.COLUMN_MAXIMOASIENTOS, asientos)

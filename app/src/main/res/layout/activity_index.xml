@@ -96,7 +96,8 @@
                     android:layout_height="wrap_content"
                     android:text="Ir a comida"
                     android:backgroundTint="@color/Header"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"
+                    android:onClick="iraComida"/>
             </LinearLayout>
 
             <!-- Sección de Promociones -->
@@ -125,7 +126,8 @@
                     android:layout_height="wrap_content"
                     android:text="Ir a Promociones"
                     android:backgroundTint="@color/Header"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp"
+                    android:onClick="iraProm"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -25,11 +25,17 @@
         <activity android:name=".Activity.LoginYRegister.RegisterActivity" android:exported="false"/>
         <activity android:name=".Activity.Semana.SemanaActivity" android:exported="false"/>
         <activity android:name=".Activity.Sala.SalaActivity" android:exported="false"/>
-        <activity android:name=".Activity.LoginYRegister.LoginActivity" android:exported="false"/>
+        <activity android:name=".Activity.Login.LoginActivity" android:exported="false"/>
         <activity android:name=".Activity.LoginYRegister.AdminActivity" android:exported="false"/>
         <activity android:name=".Activity.Pelicula.DetallesActivity" android:exported="false"/>
         <activity android:name=".Activity.Pelicula.PeliculaActivity" android:exported="false"/>
         <activity android:name=".Activity.Entrada.EntradaActivity" android:exported="false"/>
+        <activity android:name=".Activity.Pelicula.PeliculaAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Pelicula.AñadirEditarPeliculaAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Promociones.PromocionesActivity" android:exported="false"/>
+        <activity android:name=".Activity.Entrada.EntradaPromocionActivity" android:exported="false"/>
+        <activity android:name=".Activity.Comida.ComidaActivity" android:exported="false"/>
+        <activity android:name=".Activity.Entrada.EntradaComidaActivity" android:exported="false"/>
     </application>
 
 </manifest>

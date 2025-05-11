@@ -11,31 +11,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Panel de Administración"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btnManageUsers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gestionar Usuarios"
         android:layout_marginBottom="16dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Usuarios registrados:"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <ListView
-        android:id="@+id/lvUsers"
+    <Button
+        android:id="@+id/btnManageMovies"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp"/>
+        android:layout_height="wrap_content"
+        android:text="Gestionar Películas"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cerrar Sesión"
-        android:layout_marginTop="16dp"/>
+        android:text="Cerrar Sesión" />
 
 </LinearLayout>

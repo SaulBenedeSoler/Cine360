@@ -42,39 +42,24 @@ class SemanaAdapter(
         val semana = semanas[position]
         holder.textViewSemana.text = semana
 
-
         val isExpanded = expandedState[position] ?: false
 
         holder.imageExpandCollapse.setImageResource(
             if (isExpanded) R.drawable.ic_colap_more else R.drawable.ic_expand_more
         )
 
-
         holder.recyclerViewPeliculas.visibility = if (isExpanded) View.VISIBLE else View.GONE
-
 
         if (isExpanded && holder.recyclerViewPeliculas.adapter == null) {
             cargarPeliculasDeSemana(holder, semana)
         }
 
-
         holder.layoutHeader.setOnClickListener {
+            val previousExpandedState = expandedState[position] ?: false
+            expandedState[position] = !previousExpandedState
 
-            val newExpandedState = !isExpanded
-            expandedState[position] = newExpandedState
-
-            holder.imageExpandCollapse.setImageResource(
-                if (newExpandedState) R.drawable.ic_expand_more else R.drawable.ic_expand_more
-            )
-
-            holder.recyclerViewPeliculas.visibility = if (newExpandedState) View.VISIBLE else View.GONE
-
-
-            if (newExpandedState && holder.recyclerViewPeliculas.adapter == null) {
-                cargarPeliculasDeSemana(holder, semana)
-            }
+            notifyItemChanged(position)
         }
-
 
         holder.itemView.setOnClickListener { onItemClick(semana) }
     }
@@ -100,7 +85,7 @@ class SemanaAdapter(
 
         try {
 
-            val semanaString = (semanaId + 1).toString() // Sumamos 1 porque los IDs de semana comienzan en 1
+            val semanaString = (semanaId + 1).toString()
 
             val query = "SELECT * FROM ${DataBaseHelper.TABLE_PELICULA} WHERE ${DataBaseHelper.COLUMN_SEMANA} = ?"
             db.rawQuery(query, arrayOf(semanaString)).use { cursor ->

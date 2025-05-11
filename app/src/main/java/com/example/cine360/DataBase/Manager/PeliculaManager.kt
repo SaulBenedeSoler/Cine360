@@ -129,7 +129,7 @@ class PeliculaManager(val dbHelper: DataBaseHelper) {
                     val directores = obtenerDirectoresPorPeliculaId(peliculaId)
 
                     val listaDirectores = directores.mapNotNull { nombreCompleto ->
-                        if (nombreCompleto != null) { // Agrega verificación de null
+                        if (nombreCompleto != null) {
                             val partes = nombreCompleto.trim().split(" ")
                             if (partes.size >= 2) {
                                 Director(nombre = partes[0], apellido = partes[1], peliculaId = peliculaId.toLong())

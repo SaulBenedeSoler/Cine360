@@ -1,5 +1,6 @@
 package com.example.cine360.Adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -53,6 +54,9 @@ class EntradaAdapter(
             asientoTextView.text = "Asiento: ${entrada.asiento}, Fila: ${entrada.fila}"
             horarioTextView.text = "Horario: ${entrada.horario}"
 
+            val userId = obtenerIdUsuarioActual(itemView.context)
+            Log.d("EntradaAdapter", "User ID: $userId")
+
             eliminarButton.setOnClickListener {
                 val entradaId = entrada.id
                 Log.d("EntradaAdapter", "ID de entrada a eliminar: $entradaId")
@@ -66,5 +70,16 @@ class EntradaAdapter(
 
             }
         }
+    }
+
+    private fun obtenerIdUsuarioActual(context: Context): Int {
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+
+        if (usuarioId == -1) {
+            Log.e("EntradaAdapter", "No se encontró un usuario logueado")
+        }
+
+        return usuarioId
     }
 }

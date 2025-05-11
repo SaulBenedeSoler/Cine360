@@ -46,7 +46,7 @@ class DetallesActivity : AppCompatActivity() {
 
     private fun poblarHorariosSalas(peliculaId: Int) {
         val horariosContainer: LinearLayout = findViewById(R.id.horariosContainer)
-        horariosContainer.removeAllViews() // Clear any existing views
+        horariosContainer.removeAllViews()
 
         try {
 
