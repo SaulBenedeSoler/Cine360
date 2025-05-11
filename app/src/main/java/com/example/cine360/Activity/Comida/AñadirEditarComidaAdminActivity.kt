@@ -5,9 +5,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cine360.DataBase.Manager.ComidaAdminManager
-import com.example.cine360.DataBase.Manager.PromocionesAdminManager
 import com.example.cine360.DataBase.Tablas.Comida
-import com.example.cine360.DataBase.Tablas.Promociones
 import com.example.cine360.R
 
 class AñadirEditarComidaAdminActivity : AppCompatActivity() {
