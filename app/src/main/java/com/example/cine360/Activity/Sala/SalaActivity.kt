@@ -4,15 +4,26 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cine360.Activity.Comida.ComidaActivity
 import com.example.cine360.Activity.Entrada.EntradaActivity
+import com.example.cine360.Activity.Entrada.EntradaComidaActivity
+import com.example.cine360.Activity.Entrada.EntradaPromocionActivity
+import com.example.cine360.Activity.Login.LoginActivity
+import com.example.cine360.Activity.LoginYRegister.AjustesUsuarioActivity
+import com.example.cine360.Activity.Pelicula.PeliculaActivity
+import com.example.cine360.Activity.Promociones.PromocionesActivity
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradaManager
 import com.example.cine360.DataBase.Manager.PeliculaManager
@@ -30,6 +41,7 @@ class SalaActivity : AppCompatActivity() {
     private lateinit var movieManager: PeliculaManager
     private lateinit var entradaManager: EntradaManager
     private var movieIdSeleccionado: Int = -1
+    private lateinit var imageAjustes: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +52,12 @@ class SalaActivity : AppCompatActivity() {
         entradaManager = EntradaManager(dbHelper)
         recyclerViewAsientos = findViewById(R.id.recyclerViewAsientos)
         btnConfirmar = findViewById(R.id.btnConfirmar)
+        imageAjustes = findViewById(R.id.imageAjustes)
 
         btnConfirmar.setOnClickListener { confirmarSeleccion() }
+        imageAjustes.setOnClickListener { view ->
+            showPopupMenu(view)
+        }
 
         val movieId = intent.getIntExtra("movieId", -1)
         movieIdSeleccionado = movieId
@@ -184,5 +200,52 @@ class SalaActivity : AppCompatActivity() {
         }
         return usuarioId
     }
-}
 
+    private fun showPopupMenu(anchorView: View) {
+        val popupMenu = PopupMenu(this, anchorView, Gravity.END)
+        popupMenu.menuInflater.inflate(R.menu.pop_activity, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_promociones -> {
+                    startActivity(Intent(this, PromocionesActivity::class.java))
+                    true
+                }
+                R.id.menu_peliculas -> {
+                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    true
+                }
+                R.id.menu_comida -> {
+                    startActivity(Intent(this, ComidaActivity::class.java))
+                    true
+                }
+
+                R.id.menu_entradas_comida -> {
+                    startActivity(Intent(this, EntradaComidaActivity::class.java))
+                    true
+                }
+                R.id.menu_entradas_promociones -> {
+                    startActivity(Intent(this, EntradaPromocionActivity::class.java))
+                    true
+                }
+                R.id.menu_entradas_peliculas -> {
+                    startActivity(Intent(this, EntradaActivity::class.java))
+                    true
+                }
+
+                R.id.menu_usuario -> {
+                    startActivity(Intent(this, AjustesUsuarioActivity::class.java))
+                    true
+                }
+
+                R.id.menu_cerrar_sesion -> {
+                    LoginActivity.cerrarSesion(this)
+                    true
+                }
+
+                else -> false
+            }
+        }
+        popupMenu.show()
+    }
+}

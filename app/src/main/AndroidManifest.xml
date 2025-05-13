@@ -27,6 +27,7 @@
         <activity android:name=".Activity.Sala.SalaActivity" android:exported="false"/>
         <activity android:name=".Activity.Login.LoginActivity" android:exported="false"/>
         <activity android:name=".Activity.LoginYRegister.AdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginYRegister.AjustesUsuarioActivity" android:exported="false"/>
         <activity android:name=".Activity.Pelicula.DetallesActivity" android:exported="false"/>
         <activity android:name=".Activity.Pelicula.PeliculaActivity" android:exported="false"/>
         <activity android:name=".Activity.Entrada.EntradaActivity" android:exported="false"/>

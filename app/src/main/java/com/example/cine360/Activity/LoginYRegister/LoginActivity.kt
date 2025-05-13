@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cine360.Activity.LoginYRegister.AdminActivity
 import com.example.cine360.DataBase.DataBaseHelper
+import com.example.cine360.IndexActivity
 import com.example.cine360.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,7 +82,11 @@ class LoginActivity : AppCompatActivity() {
                             )
 
 
-                            val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+                            val intent = if (isAdmin) {
+                                Intent(this@LoginActivity, AdminActivity::class.java)
+                            } else {
+                                Intent(this@LoginActivity, IndexActivity::class.java)
+                            }
                             startActivity(intent)
                             finish()
 

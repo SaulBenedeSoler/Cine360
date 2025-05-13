@@ -16,19 +16,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+
         <TextView
-            android:id="@+id/textViewEntradaTitulo"
+            android:id="@+id/textViewTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/Header"
+            android:background="#A8D9F2"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Tu Entrada"
+            android:text="Menús de Comida"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewLogo"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
@@ -38,15 +39,23 @@
             android:contentDescription="Logo"
             android:src="@drawable/logo"
             android:scaleType="fitCenter"
-            android:clickable="true"
-            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewEntradaTitulo" />
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
 
+        <ImageView
+            android:id="@+id/imageAjustes"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Logo"
+            android:src="@drawable/ajsutes"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Add RecyclerView here -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEntradas"
         android:layout_width="0dp"
