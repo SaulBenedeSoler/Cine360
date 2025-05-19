@@ -5,56 +5,77 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
-
     <TextView
-        android:id="@+id/textViewTituloPromocionAmin"
+        android:id="@+id/textViewNombrePromocion"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Título de la Película" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Título de la Promoción" />
+
 
     <ImageView
-        android:id="@+id/imagenPromocionAdmin"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toBottomOf="@id/textViewTituloPromocionAmin"
-        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/imagenPromocion"
+        android:layout_width="285dp"
+        android:layout_height="375dp"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/ic_launcher_background" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewNombrePromocion"
+        app:layout_constraintWidth_percent="0.8" />
 
     <TextView
-        android:id="@+id/textViewDescripcionPromocionAdmin"
+        android:id="@+id/labelDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:text="Descripción: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imagenPromocion" />
+
+    <TextView
+        android:id="@+id/textViewDescripcionProm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/labelDescripcion" />
+
+    <TextView
+        android:id="@+id/labelPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:text="Precio: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewDescripcionProm" />
+
+    <TextView
+        android:id="@+id/textviewPrecioProm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/imagenPromocionAdmin"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Descripción de la película" />
-
-    <TextView
-        android:id="@+id/textViewPrecioPromocion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewDescripcionPromocionAdmin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Género: Comedia" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/labelPrecio" />
 
     <LinearLayout
         android:id="@+id/linearLayoutBotonesPromocion"
@@ -62,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/textViewPrecioPromocion"
+        app:layout_constraintTop_toBottomOf="@id/textviewPrecioProm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -72,7 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Modificar"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/Header"/>
 
         <Button
             android:id="@+id/buttonDeletePromocion"
@@ -80,7 +102,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Eliminar"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/Header"/>
 
     </LinearLayout>
 

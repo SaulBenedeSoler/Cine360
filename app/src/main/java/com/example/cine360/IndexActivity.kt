@@ -22,6 +22,7 @@ import com.example.cine360.DataBase.Tablas.Comida
 class IndexActivity : AppCompatActivity() {
 
     private lateinit var imageAjustes: ImageView
+    private var usuarioId: Int = -1 //ADDED THIS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class IndexActivity : AppCompatActivity() {
         imageAjustes = findViewById(R.id.imageAjustes)
         val dbHelper = DataBaseHelper(this)
 
+        usuarioId = obtenerIdUsuarioActual() //ADDED THIS
         imageAjustes.setOnClickListener { view ->
             showPopupMenu(view)
         }
@@ -46,24 +48,31 @@ class IndexActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(this, SemanaActivity::class.java))
                     true
                 }
                 R.id.menu_comida -> {
-                    startActivity(Intent(this, Comida::class.java))
+
+                    startActivity(Intent(this, ComidaActivity::class.java))
                     true
                 }
 
                 R.id.menu_entradas_comida -> {
-                    startActivity(Intent(this, EntradaComidaActivity::class.java))
+                    val intent = Intent(this, EntradaComidaActivity::class.java)
+                    intent.putExtra("USER_ID", usuarioId)
+                    startActivity(intent)
                     true
                 }
                 R.id.menu_entradas_promociones -> {
-                    startActivity(Intent(this, EntradaPromocionActivity::class.java))
+                    val intent = Intent(this, EntradaPromocionActivity::class.java)
+                    intent.putExtra("USER_ID", usuarioId)
+                    startActivity(intent)
                     true
                 }
                 R.id.menu_entradas_peliculas -> {
-                    startActivity(Intent(this, EntradaActivity::class.java))
+                    val intent = Intent(this, EntradaActivity::class.java)
+                    intent.putExtra("USER_ID", usuarioId)
+                    startActivity(intent)
                     true
                 }
                 R.id.menu_comida -> {
@@ -76,8 +85,8 @@ class IndexActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.menu_cerrar_sesion -> { // Añadido: Opción para cerrar sesión
-                    LoginActivity.cerrarSesion(this) // Llama a la función de cerrar sesión de LoginActivity
+                R.id.menu_cerrar_sesion -> {
+                    LoginActivity.cerrarSesion(this)
                     true
                 }
 
@@ -105,5 +114,11 @@ class IndexActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+    }
+
+    private fun obtenerIdUsuarioActual(): Int { //ADDED THIS
+        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+        return usuarioId
     }
 }

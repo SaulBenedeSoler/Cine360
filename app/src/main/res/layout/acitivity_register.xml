@@ -57,7 +57,8 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="@color/fondo">
+        android:background="@color/fondo"
+        android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,8 +66,8 @@
             android:text="Registro de Usuario"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
             android:layout_marginTop="32dp"/>
 
 
@@ -76,7 +77,7 @@
             android:layout_height="wrap_content"
             android:hint="Nombre de usuario"
             android:inputType="text"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -84,14 +85,15 @@
             android:layout_height="wrap_content"
             android:hint="Contraseña"
             android:inputType="textPassword"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <EditText
             android:id="@+id/confirmPass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm Password"
-            android:inputType="textPassword" />
+            android:hint="Confirmar contraseña"
+            android:inputType="textPassword"
+            android:layout_marginBottom="16dp"/>
 
         <EditText
             android:id="@+id/etNombre"
@@ -99,7 +101,7 @@
             android:layout_height="wrap_content"
             android:hint="Nombre completo"
             android:inputType="textPersonName"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <EditText
             android:id="@+id/etEmail"
@@ -107,21 +109,26 @@
             android:layout_height="wrap_content"
             android:hint="Correo electrónico"
             android:inputType="textEmailAddress"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="32dp"/>
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registrarse"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/Header"/>
 
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvIniciarSesion"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Volver"
-            style="?attr/buttonBarButtonStyle"/>
+            android:text="¿Ya tienes cuenta? Inicia sesión"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

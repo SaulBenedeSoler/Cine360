@@ -48,25 +48,25 @@ class PromocionesManager(val dbHelper: DataBaseHelper) {
 
             /*Promociones Básicas*/
             Promociones(1, "Descubre la magia del cine", "descubrelamagia.png", "Te invitamos a obtener una gran experiencia con esta promoción descuentos en tus entradas para 3 películas ", 15.50),
-            Promociones(2, "Tarjeta Regalo", "foto2.jpg", "Adquiere esta tarjeta con un valor de 30.99 en bar y cine.", 30.99),
-            Promociones(3, "Cine en familia", "foto99.jpg", "Obten entradas gratis para toda la familia durante una semana", 49.99),
-            Promociones(4, "Pase Mensual", "foto8983.jpg", "Compra esta promoción y obten entradas ilimitadas durante un mes", 59.99),
-            Promociones(5, "Pase Anual", "aoda.dasda", "Compra esta promoción y obten entradas ilimitadas durante un año", 69.99),
+            Promociones(2, "Tarjeta Regalo", "tarjetaregalo.png", "Adquiere esta tarjeta con un valor de 30.99 en bar y cine.", 30.99),
+            Promociones(3, "Cine en familia", "cineenfamilia.png", "Obten entradas gratis para toda la familia durante una semana", 49.99),
+            Promociones(4, "Pase Mensual", "pasemensual.png", "Compra esta promoción y obten entradas ilimitadas durante un mes", 59.99),
+            Promociones(5, "Pase Anual", "paseanual.png", "Compra esta promoción y obten entradas ilimitadas durante un año", 69.99),
 
             /*Promociones con Temática*/
-            Promociones(6, "Noches de Insomnio", "foto3.jpg", "Obten esta promoción y recibiras el pack de supervivencia EXCLUSIVO que contiene palomitas, 2 refrescos y posters exclusivos", 20.50),
-            Promociones(7, "No pares de reir", "foto4.jpg", "Obten un descuento del 10% en la entrada de la película a elegir, palomitas, 1 refresco y un juego de mesa con temática de humor", 19.99),
-            Promociones(8, "Descarga de adrenalina", "foto5.jpg", "Obten con esta promoción dos entradas para cualquier película, un cubo grande de palomitas y dos refrescos pequeños", 15.99)
+            Promociones(6, "Noches de Insomnio", "nochesdeinsomnio.png", "Obten esta promoción y recibiras el pack de supervivencia EXCLUSIVO que contiene palomitas, 2 refrescos y posters exclusivos", 20.50),
+            Promociones(7, "No pares de reir", "noparesdereir.png", "Obten un descuento del 10% en la entrada de la película a elegir, palomitas, 1 refresco y un juego de mesa con temática de humor", 19.99),
+            Promociones(8, "Descarga de adrenalina", "descargaadrenalina.png", "Obten con esta promoción dos entradas para cualquier película, un cubo grande de palomitas y dos refrescos pequeños", 15.99)
 
         )
         insertarPromociones(db, promociones)
     }
 
 
-    fun obtenerPromocionporId(db: SQLiteDatabase): List<Comida>{
+    fun obtenerPromocionporId(db: SQLiteDatabase): List<Promociones>{
 
-        val Comida = mutableListOf<Comida>()
-        val cursor = db.rawQuery("SELECT * FROM ${DataBaseHelper.TABLE_COMIDA}", null)
+        val Promocion = mutableListOf<Promociones>()
+        val cursor = db.rawQuery("SELECT * FROM ${DataBaseHelper.TABLE_PROMOCIONES}", null)
         cursor.use {
 
             if(it.moveToFirst()){
@@ -77,13 +77,13 @@ class PromocionesManager(val dbHelper: DataBaseHelper) {
                     val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION))
                     val imagen = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))
                     val precio = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))
-                    val comida = Comida(id, nombre, descripcion, imagen , precio)
-                    Comida.add(comida)
+                    val promocion = Promociones(id, nombre, descripcion, imagen , precio)
+                    Promocion.add(promocion)
                 }while(it.moveToNext())
             }
 
         }
-        return Comida
+        return Promocion
     }
 
 

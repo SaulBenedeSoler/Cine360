@@ -21,14 +21,11 @@ import com.example.cine360.Adapter.EntradaAdapter
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradaManager
 import com.example.cine360.DataBase.Manager.SalaManager
-import com.example.cine360.DataBase.Tablas.Comida
 import com.example.cine360.DataBase.Tablas.Entrada
 import com.example.cine360.IndexActivity
-import com.example.cine360.MainActivity
 import com.example.cine360.R
 
 class EntradaActivity : AppCompatActivity() {
-
 
     private lateinit var recyclerViewEntradas: RecyclerView
     private lateinit var btnVolver: Button
@@ -42,6 +39,7 @@ class EntradaActivity : AppCompatActivity() {
 
         recyclerViewEntradas = findViewById(R.id.recyclerViewEntradas)
         btnVolver = findViewById(R.id.btnVolver)
+        imageAjustes = findViewById(R.id.imageAjustes)
 
         recyclerViewEntradas.layoutManager = LinearLayoutManager(this)
 
@@ -65,7 +63,7 @@ class EntradaActivity : AppCompatActivity() {
             Toast.makeText(this, "No hay entradas registradas", Toast.LENGTH_SHORT).show()
         }
 
-        val adapter = EntradaAdapter(entradas, entradaManager, dbHelper)
+        val adapter = EntradaAdapter(this, entradas, entradaManager, dbHelper) // Pass context
         adapter.setOnEntradaDeletedListener(object : EntradaAdapter.OnEntradaDeletedListener {
             override fun onEntradaDeleted(entrada: Entrada) {
                 Log.d("EntradaActivity", "Entrada eliminada. Película ID: ${entrada.peliculaId}, Asiento: ${entrada.asiento}, Fila: ${entrada.fila}, Horario: ${entrada.horario}, Sala: ${entrada.sala?.nombre}")
@@ -82,6 +80,7 @@ class EntradaActivity : AppCompatActivity() {
                 } else {
                     Log.e("EntradaActivity", "peliculaId es nulo o el nombre de la sala es nulo")
                 }
+                cargarEntradas() // Reload the list after deletion
             }
         })
         recyclerViewEntradas.adapter = adapter
@@ -117,7 +116,7 @@ class EntradaActivity : AppCompatActivity() {
             if (asientosString != null) {
                 val asientos = asientosString.split(",").toMutableList()
                 if (asientoColumna != null && fila != null) {
-                    val numeroDeColumnas = 5
+                    val numeroDeColumnas = 5 // Assuming 5 columns, adjust as necessary
                     val asientoIndex = (fila - 1) * numeroDeColumnas + (asientoColumna - 1)
 
                     if (asientoIndex >= 0 && asientoIndex < asientos.size && asientos[asientoIndex] == "X") {
@@ -142,6 +141,37 @@ class EntradaActivity : AppCompatActivity() {
         }
     }
 
+    private fun cargarEntradas() {
+        val userId = intent.getIntExtra("USER_ID", -1)
+        val entradas = if (userId != -1) {
+            entradaManager.obtenerEntradasPorUsuario(userId).toMutableList()
+        } else {
+            entradaManager.obtenerTodasLasEntradas().toMutableList()
+        }
+        val adapter = EntradaAdapter(this, entradas, entradaManager, dbHelper) // Pass context
+        adapter.setOnEntradaDeletedListener(object : EntradaAdapter.OnEntradaDeletedListener {
+            override fun onEntradaDeleted(entrada: Entrada) {
+                Log.d("EntradaActivity", "Entrada eliminada. Película ID: ${entrada.peliculaId}, Asiento: ${entrada.asiento}, Fila: ${entrada.fila}, Horario: ${entrada.horario}, Sala: ${entrada.sala?.nombre}")
+                if (entrada.peliculaId != null && entrada.sala?.nombre != null) {
+                    entrada.sala?.let {
+                        liberarAsiento(
+                            it.nombre,
+                            entrada.asiento,
+                            entrada.fila,
+                            entrada.horario,
+                            entrada.peliculaId
+                        )
+                    }
+                } else {
+                    Log.e("EntradaActivity", "peliculaId es nulo o el nombre de la sala es nulo")
+                }
+                cargarEntradas()
+            }
+        })
+        recyclerViewEntradas.adapter = adapter
+    }
+
+
     private fun showPopupMenu(anchorView: View) {
         val popupMenu = PopupMenu(this, anchorView, Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.pop_activity, popupMenu.menu)
@@ -157,7 +187,7 @@ class EntradaActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_comida -> {
-                    startActivity(Intent(this, Comida::class.java))
+                    startActivity(Intent(this, ComidaActivity::class.java))
                     true
                 }
 

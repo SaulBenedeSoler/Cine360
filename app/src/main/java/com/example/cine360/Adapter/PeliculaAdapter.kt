@@ -54,8 +54,8 @@ class PeliculaAdapter(
         holder.descripcionTextView.text = pelicula.descripcion
         holder.semanaTextView.text = pelicula.semana
         holder.generoTextView.text = pelicula.genero
-        holder.fechaLanzamientoTextView.text = "Fecha de lanzamiento: ${pelicula.fechaLanzamiento}"
-        holder.duracionTextView.text = "Duración: ${pelicula.duracion} minutos"
+        holder.fechaLanzamientoTextView.text = pelicula.fechaLanzamiento
+        holder.duracionTextView.text = pelicula.duracion.toString()
 
         Log.d("PeliculaAdapter", "Nombre de imagen desde pelicula: ${pelicula.imagen}")
         val imageName = pelicula.imagen.substringBeforeLast(".")

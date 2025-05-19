@@ -1,10 +1,13 @@
 package com.example.cine360.Activity.LoginYRegister
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.DataBase.Manager.UserManager
 import com.example.cine360.R
 
@@ -24,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         val etNombre = findViewById<EditText>(R.id.etNombre)
         val etEmail = findViewById<EditText>(R.id.etEmail)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val btnBack = findViewById<Button>(R.id.btnBack)
+        val btniniciarsesion = findViewById<TextView>(R.id.tvIniciarSesion)
 
         btnRegister.setOnClickListener {
             val username = etUsername.text.toString().trim()
@@ -54,8 +57,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        btnBack.setOnClickListener {
-            finish()
+        btniniciarsesion.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.cine360.Activity.Semana
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -26,21 +28,21 @@ import com.example.cine360.R
 class SemanaActivity : AppCompatActivity() {
 
     private lateinit var imageAjustes: ImageView
+    private lateinit var context: Context // Add Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_semanas)
 
-        val dbHelper = DataBaseHelper(this)
+        context = this // Initialize Context
+        val dbHelper = DataBaseHelper(context) // Use the context
         val db = dbHelper.readableDatabase
         val semanaManager = SemanaManager(dbHelper)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewSemanas)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
+        recyclerView.layoutManager = LinearLayoutManager(context) // Use the context
 
         val semanas = semanaManager.obtenerTodasLasSemanas()
-
 
         val semanasParaMostrar = if (semanas.isEmpty()) {
             listOf("Semana 1", "Semana 2", "Semana 3", "Semana 4")
@@ -48,68 +50,66 @@ class SemanaActivity : AppCompatActivity() {
             semanas
         }
 
-
         val peliculaManager = PeliculaManager(dbHelper)
 
         imageAjustes = findViewById(R.id.imageAjustes)
-
 
         imageAjustes.setOnClickListener { view ->
             showPopupMenu(view)
         }
 
-        val adapter = SemanaAdapter(semanasParaMostrar, peliculaManager) { semanaSeleccionada ->
+        val adapter = SemanaAdapter(context, semanasParaMostrar, peliculaManager) { semanaSeleccionada ->  // Pass the context
             irAPeliculas(semanaSeleccionada)
         }
         recyclerView.adapter = adapter
     }
 
     private fun irAPeliculas(semana: String) {
-        val intent = Intent(this, PeliculaActivity::class.java)
+        val intent = Intent(context, PeliculaActivity::class.java) // Use the context
         intent.putExtra("SEMANA", semana)
         startActivity(intent)
     }
 
     private fun showPopupMenu(anchorView: View) {
-        val popupMenu = PopupMenu(this, anchorView, Gravity.END)
+        val popupMenu = PopupMenu(context, anchorView, Gravity.END) // Use the context
         popupMenu.menuInflater.inflate(R.menu.pop_activity, popupMenu.menu)
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.menu_promociones -> {
-                    startActivity(Intent(this, PromocionesActivity::class.java))
+                    startActivity(Intent(context, PromocionesActivity::class.java)) // Use the context
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(context, SemanaActivity::class.java)) // Use the context
                     true
                 }
                 R.id.menu_comida -> {
-                    startActivity(Intent(this, ComidaActivity::class.java))
+                    startActivity(Intent(context, ComidaActivity::class.java)) // Use the context
                     true
                 }
 
                 R.id.menu_entradas_comida -> {
-                    startActivity(Intent(this, EntradaComidaActivity::class.java))
+                    startActivity(Intent(context, EntradaComidaActivity::class.java)) // Use the context
                     true
                 }
                 R.id.menu_entradas_promociones -> {
-                    startActivity(Intent(this, EntradaPromocionActivity::class.java))
+                    startActivity(Intent(context, EntradaPromocionActivity::class.java)) // Use the context
                     true
                 }
                 R.id.menu_entradas_peliculas -> {
-                    startActivity(Intent(this, EntradaActivity::class.java))
+                    startActivity(Intent(context, EntradaActivity::class.java)) // Use the context
                     true
                 }
 
 
                 R.id.menu_usuario -> {
-                    startActivity(Intent(this, AjustesUsuarioActivity::class.java))
+                    startActivity(Intent(context, AjustesUsuarioActivity::class.java)) // Use the context
                     true
                 }
 
                 R.id.menu_cerrar_sesion -> {
-                    LoginActivity.cerrarSesion(this)
+                    LoginActivity.cerrarSesion(context) // Use the context
                     true
                 }
 
@@ -118,5 +118,4 @@ class SemanaActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
-
 }

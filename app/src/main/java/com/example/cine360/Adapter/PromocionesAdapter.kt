@@ -1,4 +1,4 @@
-package com.example.cine360.Activity.Promociones
+package com.example.cine360.Adapter
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cine360.Activity.Entrada.EntradaPromocionActivity
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradasPromocionesManager
@@ -45,13 +46,27 @@ class PromocionesAdapter(
     override fun onBindViewHolder(holder: PromocionViewHolder, position: Int) {
         val promocion = listaPromociones[position]
         holder.nombreTextView.text = promocion.nombre
-        holder.descripcionTextView.text = promocion.descripcion
+        holder.descripcionTextView.text = promocion.descripcion  // Corrected this line
         holder.precioTextView.text = String.format(Locale.getDefault(), "%.2f €", promocion.precio)
-        holder.imagenPromocion
 
-        Glide.with(holder.itemView.context)
-            .load(promocion.imagen)
-            .into(holder.imagenPromocion)
+        val imageName = promocion.imagen
+        val resourceId = context.resources.getIdentifier(
+            imageName.substringBeforeLast("."),
+            "drawable",
+            context.packageName
+        )
+
+        if (resourceId != 0) {
+            Glide.with(holder.itemView.context)
+                .load(resourceId)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .error(R.drawable.error_imagen)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(holder.imagenPromocion)
+        } else {
+            Log.e("PromocionesAdapter", "Resource not found: $imageName")
+            holder.imagenPromocion.setImageResource(R.drawable.error_imagen)
+        }
 
         holder.comprarButton.setOnClickListener {
             val userId = obtenerIdUsuarioActual(holder.itemView.context)
@@ -62,7 +77,6 @@ class PromocionesAdapter(
                     "Debes iniciar sesión para adquirir promociones",
                     Toast.LENGTH_SHORT
                 ).show()
-
                 return@setOnClickListener
             }
 
@@ -101,11 +115,9 @@ class PromocionesAdapter(
     private fun obtenerIdUsuarioActual(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)
-
         if (usuarioId == -1) {
             Log.e("PromocionesAdapter", "No se encontró un usuario logueado")
         }
-
         return usuarioId
     }
 }

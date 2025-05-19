@@ -10,40 +10,41 @@ import com.example.cine360.DataBase.Tablas.Promociones
 
 class PromocionesAdminManager(context: Context) {
 
-
     private val dbHelper = DataBaseHelper(context)
     private val database: SQLiteDatabase = dbHelper.writableDatabase
+
+
     fun close() {
         dbHelper.close()
     }
 
 
-    fun addPromocion(promociones: Promociones): Long {
+    fun addPromocion(promocion: Promociones): Long {
         val values = ContentValues().apply {
-            put(DataBaseHelper.COLUMN_PROMOCION_NOMBRE, promociones.nombre)
-            put(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION, promociones.descripcion)
-            put(DataBaseHelper.COLUMN_PROMOCION_PRECIO, promociones.precio)
-            put(DataBaseHelper.COLUMN_PROMOCION_IMAGEN, promociones.imagen)
+            put(DataBaseHelper.COLUMN_PROMOCION_NOMBRE, promocion.nombre)
+            put(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION, promocion.descripcion)
+            put(DataBaseHelper.COLUMN_PROMOCION_IMAGEN, promocion.imagen)
+            put(DataBaseHelper.COLUMN_PROMOCION_PRECIO, promocion.precio)
         }
 
-        val newRowId = database.insert(DataBaseHelper.TABLE_PELICULA, null, values)
+        val newRowId = database.insert(DataBaseHelper.TABLE_PROMOCIONES, null, values)
         if (newRowId == -1L) {
-            Log.e("AdminPromocionManager", "Error al insertar la promocion: ${promociones.nombre}")
+            Log.e("AdminPromocionManager", "Error al insertar la promoción: ${promocion.nombre}")
         } else {
-            Log.d("AdminPeliculaManager", "Película insertada con ID: $newRowId")
+            Log.d("AdminPromocionManager", "Promoción insertada con ID: $newRowId")
         }
         return newRowId
     }
 
 
     fun getAllPromociones(): MutableList<Promociones> {
-        val promocion = mutableListOf<Promociones>()
+        val promociones = mutableListOf<Promociones>()
         val projection = arrayOf(
             DataBaseHelper.COLUMN_PROMOCION_ID,
             DataBaseHelper.COLUMN_PROMOCION_NOMBRE,
-            DataBaseHelper.COLUMN_PROMOCION_PRECIO,
             DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION,
-            DataBaseHelper.COLUMN_PROMOCION_IMAGEN
+            DataBaseHelper.COLUMN_PROMOCION_IMAGEN,
+            DataBaseHelper.COLUMN_PROMOCION_PRECIO
         )
 
         val cursor: Cursor = database.query(
@@ -59,16 +60,16 @@ class PromocionesAdminManager(context: Context) {
         cursor.use {
             while (it.moveToNext()) {
                 val id = it.getLong(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_ID)).toInt()
-                val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_NOMBRE))
-                val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION))
-                val precio = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))
-                val imagen = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))
+                val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_NOMBRE)) // Corregido
+                val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION)) // Corregido
+                val imagen = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))   // Corregido
+                val precio = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))    // Corregido
 
-                val promociones = Promociones(id, nombre, descripcion,precio,imagen)
-                promocion.add(promociones)
+                val promocion = Promociones(id, nombre, imagen, descripcion, precio) // Corregido el orden de los argumentos
+                promociones.add(promocion)
             }
         }
-        return promocion
+        return promociones
     }
 
 
@@ -78,7 +79,7 @@ class PromocionesAdminManager(context: Context) {
             DataBaseHelper.COLUMN_PROMOCION_NOMBRE,
             DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION,
             DataBaseHelper.COLUMN_PROMOCION_IMAGEN,
-            DataBaseHelper.COLUMN_PROMOCION_PRECIO,
+            DataBaseHelper.COLUMN_PROMOCION_PRECIO
         )
 
         val selection = "${DataBaseHelper.COLUMN_PROMOCION_ID} = ?"
@@ -97,29 +98,29 @@ class PromocionesAdminManager(context: Context) {
         cursor.use {
             if (it.moveToFirst()) {
                 val id = it.getLong(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_ID)).toInt()
-                val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_NOMBRE))
-                val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION))
-                val precio = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))
-                val imagen = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))
+                val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_NOMBRE)) // Corregido
+                val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION)) // Corregido
+                val imagen = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))   // Corregido
+                val precio = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))    // Corregido
 
 
-                return Promociones(id, nombre, descripcion,precio,imagen)
+                return Promociones(id, nombre, imagen, descripcion, precio)  // Corregido el orden
             }
         }
         return null
     }
 
 
-    fun updatePromocion(promociones: Promociones): Int {
+    fun updatePromocion(promocion: Promociones): Int {
         val values = ContentValues().apply {
-            put(DataBaseHelper.COLUMN_PROMOCION_NOMBRE, promociones.nombre)
-            put(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION, promociones.descripcion)
-            put(DataBaseHelper.COLUMN_PROMOCION_IMAGEN, promociones.imagen)
-            put(DataBaseHelper.COLUMN_PROMOCION_PRECIO, promociones.precio)
+            put(DataBaseHelper.COLUMN_PROMOCION_NOMBRE, promocion.nombre)
+            put(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION, promocion.descripcion)
+            put(DataBaseHelper.COLUMN_PROMOCION_IMAGEN, promocion.imagen)
+            put(DataBaseHelper.COLUMN_PROMOCION_PRECIO, promocion.precio)
         }
 
-        val selection = "${DataBaseHelper.COLUMN_Pelicula_ID} = ?"
-        val selectionArgs = arrayOf(promociones.id.toString())
+        val selection = "${DataBaseHelper.COLUMN_PROMOCION_ID} = ?"
+        val selectionArgs = arrayOf(promocion.id.toString())
 
         val rowsAffected = database.update(
             DataBaseHelper.TABLE_PROMOCIONES,
@@ -129,15 +130,15 @@ class PromocionesAdminManager(context: Context) {
         )
 
         if (rowsAffected > 0) {
-            Log.d("AdminPeliculaManager", "Película con ID ${promociones.id} actualizada.")
+            Log.d("AdminPromocionManager", "Promoción con ID ${promocion.id} actualizada.")
         } else {
-            Log.e("AdminPeliculaManager", "Error al actualizar la película con ID ${promociones.id}.")
+            Log.e("AdminPromocionManager", "Error al actualizar la promoción con ID ${promocion.id}.")
         }
         return rowsAffected
     }
 
 
-    fun deletePromociones(promocionId: Int): Int {
+    fun deletePromocion(promocionId: Int): Int {
         val selection = "${DataBaseHelper.COLUMN_PROMOCION_ID} = ?"
         val selectionArgs = arrayOf(promocionId.toString())
 
@@ -148,10 +149,11 @@ class PromocionesAdminManager(context: Context) {
         )
 
         if (rowsDeleted > 0) {
-            Log.d("AdminPeliculaManager", "Película con ID $promocionId eliminada.")
+            Log.d("AdminPromocionManager", "Promoción con ID $promocionId eliminada.")
         } else {
-            Log.e("AdminPeliculaManager", "Error al eliminar la película con ID $promocionId.")
+            Log.e("AdminPromocionManager", "Error al eliminar la promoción con ID $promocionId.")
         }
         return rowsDeleted
     }
 }
+

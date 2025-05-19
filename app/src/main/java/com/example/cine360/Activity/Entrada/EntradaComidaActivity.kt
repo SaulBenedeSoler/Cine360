@@ -1,5 +1,6 @@
 package com.example.cine360.Activity.Entrada
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.Activity.LoginYRegister.AjustesUsuarioActivity
 import com.example.cine360.Activity.Pelicula.PeliculaActivity
 import com.example.cine360.Activity.Promociones.PromocionesActivity
+import com.example.cine360.Activity.Semana.SemanaActivity
 import com.example.cine360.Adapter.EntradaComidaAdapter
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradasComidaManager
@@ -32,6 +34,8 @@ class EntradaComidaActivity : AppCompatActivity() {
     private lateinit var dbHelper: DataBaseHelper
     private lateinit var entradasComidaManager: EntradasComidaManager
     private lateinit var imageAjustes: ImageView
+    private var userId: Int = -1
+    private lateinit var context: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,40 +44,22 @@ class EntradaComidaActivity : AppCompatActivity() {
         recyclerViewEntradasComida = findViewById(R.id.recyclerViewEntradasComida)
         btnVolver = findViewById(R.id.btnVolverComida)
         imageAjustes = findViewById(R.id.imageAjustes)
+        context = this //ADDED THIS
 
         recyclerViewEntradasComida.layoutManager = LinearLayoutManager(this)
 
         dbHelper = DataBaseHelper(this)
         entradasComidaManager = EntradasComidaManager(dbHelper)
 
-        val userId = intent.getIntExtra("USER_ID", -1)
 
-        val entradasComida: MutableList<EntradaComida> = if (userId != -1) {
-            entradasComidaManager.obtenerEntradasComidaPorUsuario(userId).toMutableList()
-        } else {
-            entradasComidaManager.obtenerTodasLasEntradasComida().toMutableList()
+        userId = intent.getIntExtra("USER_ID", -1)
+
+
+        cargarEntradasComida()
+
+        imageAjustes.setOnClickListener { view ->
+            showPopupMenu(view)
         }
-
-        if (entradasComida.isEmpty()) {
-            Toast.makeText(this, "No has adquirido ninguna comida", Toast.LENGTH_SHORT).show()
-        }
-
-        entradasComidaAdapter = EntradaComidaAdapter(entradasComida, entradasComidaManager)
-        entradasComidaAdapter.setOnEntradaComidaDeletedListener(object :
-            EntradaComidaAdapter.OnEntradaComidaDeletedListener {
-            override fun onEntradaComidaDeleted(entradaComida: EntradaComida) {
-                Log.d(
-                    "EntradaComidaActivity",
-                    "Entrada de comida eliminada. ID: ${entradaComida.id}, Nombre: ${entradaComida.nombrecomida}"
-                )
-                Toast.makeText(
-                    this@EntradaComidaActivity,
-                    "Comida eliminada de tu lista",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
-        recyclerViewEntradasComida.adapter = entradasComidaAdapter
 
         btnVolver.setOnClickListener {
             val intent = Intent(this, IndexActivity::class.java)
@@ -81,11 +67,41 @@ class EntradaComidaActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
 
-        imageAjustes.setOnClickListener { view ->
-            showPopupMenu(view)
+    private fun cargarEntradasComida() {
+        if (userId != -1) {
+
+            val entradasComida = entradasComidaManager.obtenerEntradasComidaPorUsuario(userId).toMutableList()
+
+            if (entradasComida.isEmpty()) {
+                Toast.makeText(this, "No has adquirido ninguna comida", Toast.LENGTH_SHORT).show()
+            }
+
+            entradasComidaAdapter = EntradaComidaAdapter(context, entradasComida, entradasComidaManager) //ADDED context
+            entradasComidaAdapter.setOnEntradaComidaDeletedListener(object :
+                EntradaComidaAdapter.OnEntradaComidaDeletedListener {
+                override fun onEntradaComidaDeleted(entradaComida: EntradaComida) {
+                    Log.d(
+                        "EntradaComidaActivity",
+                        "Entrada de comida eliminada. ID: ${entradaComida.id}, Nombre: ${entradaComida.nombrecomida}"
+                    )
+                    Toast.makeText(
+                        this@EntradaComidaActivity,
+                        "Comida eliminada de tu lista",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    cargarEntradasComida()
+                }
+            })
+            recyclerViewEntradasComida.adapter = entradasComidaAdapter
+        } else {
+
+            Toast.makeText(this, "Error: No se pudo obtener el ID del usuario", Toast.LENGTH_SHORT)
+                .show()
+            finish()
         }
-
     }
 
 
@@ -100,7 +116,7 @@ class EntradaComidaActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(this, SemanaActivity::class.java))
                     true
                 }
                 R.id.menu_comida -> {
@@ -140,5 +156,4 @@ class EntradaComidaActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
-
 }

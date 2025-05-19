@@ -14,6 +14,7 @@ import com.example.cine360.DataBase.Tablas.Entrada
 import com.example.cine360.R
 
 class EntradaAdapter(
+    private val context: Context, // Added context parameter
     private val entradas: MutableList<Entrada>,
     private val entradaManager: EntradaManager,
     private val dbHelper: DataBaseHelper
@@ -24,6 +25,9 @@ class EntradaAdapter(
     }
 
     private var listener: OnEntradaDeletedListener? = null
+    private val currentUserId: Int by lazy {  //ADDED THIS
+        obtenerIdUsuarioActual(context)
+    }
 
     fun setOnEntradaDeletedListener(listener: OnEntradaDeletedListener) {
         this.listener = listener
@@ -54,8 +58,8 @@ class EntradaAdapter(
             asientoTextView.text = "Asiento: ${entrada.asiento}, Fila: ${entrada.fila}"
             horarioTextView.text = "Horario: ${entrada.horario}"
 
-            val userId = obtenerIdUsuarioActual(itemView.context)
-            Log.d("EntradaAdapter", "User ID: $userId")
+            // val userId = obtenerIdUsuarioActual(itemView.context) // REMOVED THIS
+            Log.d("EntradaAdapter", "User ID: $currentUserId") //CHANGED THIS
 
             eliminarButton.setOnClickListener {
                 val entradaId = entrada.id
@@ -72,7 +76,7 @@ class EntradaAdapter(
         }
     }
 
-    private fun obtenerIdUsuarioActual(context: Context): Int {
+    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)
 

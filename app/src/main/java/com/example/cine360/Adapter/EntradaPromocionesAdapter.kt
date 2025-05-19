@@ -1,5 +1,6 @@
 package com.example.cine360.Adapter
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +10,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradasPromocionesManager
 import com.example.cine360.DataBase.Tablas.EntradaPromociones
 import com.example.cine360.R
 
 class EntradaPromocionAdapter(
+    private val context: Context, // Added context parameter
     private val entradasPromociones: MutableList<EntradaPromociones>,
     private val entradasPromocionesManager: EntradasPromocionesManager
 ) : RecyclerView.Adapter<EntradaPromocionAdapter.EntradaPromocionViewHolder>() {
 
     interface OnEntradaPromocionDeletedListener {
-        fun onEntradaPromocionDeleted(entradaPromocion: EntradaPromociones)
+        fun onEntradaPromocionDeleted(entradaPromociones: EntradaPromociones)
     }
 
     private var listener: OnEntradaPromocionDeletedListener? = null
+    private val currentUserId: Int by lazy {  //ADDED THIS
+        obtenerIdUsuarioActual(context)
+    }
 
     fun setOnEntradaPromocionDeletedListener(listener: OnEntradaPromocionDeletedListener) {
         this.listener = listener
@@ -55,10 +61,28 @@ class EntradaPromocionAdapter(
             precioPromocionTextView.text =
                 "Precio: ${String.format("%.2f", entradaPromocion.precioPromocion)} €"
 
+            val imageName = entradaPromocion.imagenPromocion
+            val resourceId = if (imageName != null) {
+                itemView.context.resources.getIdentifier(
+                    imageName.substringBeforeLast("."),
+                    "drawable",
+                    itemView.context.packageName
+                )
+            } else {
+                0
+            }
 
-            Glide.with(itemView.context)
-                .load(entradaPromocion.imagenPromocion)
-                .into(imagenPromocionImageView)
+            if (resourceId != 0) {
+                Glide.with(itemView.context)
+                    .load(resourceId)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.error_imagen)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(imagenPromocionImageView)
+            } else {
+                Log.e("EntradaPromocionAdapter", "Resource not found: $imageName")
+                imagenPromocionImageView.setImageResource(R.drawable.error_imagen)
+            }
 
             eliminarButton.setOnClickListener {
                 val entradaPromocionId = entradaPromocion.id
@@ -77,5 +101,14 @@ class EntradaPromocionAdapter(
                 }
             }
         }
+    }
+
+    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+        if (usuarioId == -1) {
+            Log.e("EntradaPromocionAdapter", "No se encontró un usuario logueado")
+        }
+        return usuarioId
     }
 }

@@ -28,6 +28,9 @@ class ComidaAdapter(
     private val entradasComidaManager: EntradasComidaManager by lazy {
         DataBaseHelper(valContext).let { EntradasComidaManager(it) }
     }
+    private val currentUserId: Int by lazy {  //ADDED THIS
+        obtenerIdUsuarioActual(valContext)
+    }
 
     class ComidaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreTextView: TextView = itemView.findViewById(R.id.textViewNombreComida)
@@ -66,9 +69,9 @@ class ComidaAdapter(
             .into(holder.imagenComida)
 
         holder.comprarButton.setOnClickListener {
-            val userId = obtenerIdUsuarioActual(holder.itemView.context)
+            //val userId = obtenerIdUsuarioActual(holder.itemView.context)  //REMOVED THIS
             val entradaId = entradasComidaManager.crearEntradaComida(
-                userId,
+                currentUserId,  //CHANGED THIS
                 comida.id,
                 comida.nombre,
                 comida.descripcion,
@@ -79,7 +82,7 @@ class ComidaAdapter(
             if (entradaId > 0) {
                 Toast.makeText(holder.itemView.context, "Comida adquirida", Toast.LENGTH_SHORT).show()
                 val intent = Intent(holder.itemView.context, EntradaComidaActivity::class.java)
-                intent.putExtra("USER_ID", userId)
+                intent.putExtra("USER_ID", currentUserId)  //CHANGED THIS
                 holder.itemView.context.startActivity(intent)
             } else {
                 Toast.makeText(holder.itemView.context, "Error al adquirir la Comida", Toast.LENGTH_SHORT).show()
@@ -95,7 +98,7 @@ class ComidaAdapter(
     }
 
 
-    private fun obtenerIdUsuarioActual(context: Context): Int {
+    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)
 
@@ -106,4 +109,3 @@ class ComidaAdapter(
         return usuarioId
     }
 }
-

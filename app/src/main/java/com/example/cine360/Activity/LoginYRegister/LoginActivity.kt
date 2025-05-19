@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cine360.Activity.LoginYRegister.AdminActivity
+import com.example.cine360.Activity.LoginYRegister.RegisterActivity
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.IndexActivity
 import com.example.cine360.R
@@ -22,6 +25,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
+    private lateinit var textViewRegister: TextView
     private lateinit var dbHelper: DataBaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +35,9 @@ class LoginActivity : AppCompatActivity() {
         editTextEmail = findViewById(R.id.etUsername)
         editTextPassword = findViewById(R.id.etPassword)
         buttonLogin = findViewById(R.id.btnLogin)
+        textViewRegister = findViewById(R.id.textViewRegister)
         dbHelper = DataBaseHelper(this)
+
 
 
         buttonLogin.setOnClickListener {
@@ -44,7 +50,15 @@ class LoginActivity : AppCompatActivity() {
             }
 
             loginUser(email, password)
+
+
         }
+
+        textViewRegister.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun loginUser(email: String, password: String) {

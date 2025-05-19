@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    tools:context=".Activity.Comida.ComidaActivity">
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/textViewNombreComida"
@@ -18,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Nombre del Producto" />
+        tools:text="Nombre del producto" />
 
     <ImageView
         android:id="@+id/imagenComida"
@@ -38,9 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:text="Descripción: "
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:text="Descripción: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imagenComida" />
 
@@ -62,9 +61,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:text="Precio: "
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:text="Precio: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewDescripcionComida" />
 

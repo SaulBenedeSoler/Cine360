@@ -4,21 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:background="@color/fondo"
     tools:context=".Activity.Pelicula.PeliculaActivity">
 
     <TextView
         android:id="@+id/textViewTituloPelicula"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#A8D9F2"
         android:gravity="center"
-        android:textColor="@android:color/black"
-        android:textSize="28sp"
+        android:padding="16dp"
+        android:text="Titulo de la promocion"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Título de la Película" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/imagenPelicula"

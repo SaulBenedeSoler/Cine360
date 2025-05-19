@@ -28,4 +28,5 @@ class UserAdapter(context: Context, private val users: List<Usuario>) :
 
         return view
     }
+
 }

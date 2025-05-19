@@ -1,5 +1,6 @@
 package com.example.cine360.Activity.Entrada
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.Activity.LoginYRegister.AjustesUsuarioActivity
 import com.example.cine360.Activity.Pelicula.PeliculaActivity
 import com.example.cine360.Activity.Promociones.PromocionesActivity
+import com.example.cine360.Activity.Semana.SemanaActivity
 import com.example.cine360.Adapter.EntradaPromocionAdapter
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradasPromocionesManager
@@ -31,6 +33,7 @@ class EntradaPromocionActivity : AppCompatActivity() {
     private lateinit var entradasPromocionesManager: EntradasPromocionesManager
     private lateinit var dbHelper: DataBaseHelper
     private lateinit var imageAjustes: ImageView
+    private lateinit var context: Context // Added context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +42,7 @@ class EntradaPromocionActivity : AppCompatActivity() {
         recyclerViewEntradasPromociones = findViewById(R.id.recyclerViewEntradasPromociones)
         btnVolver = findViewById(R.id.btnVolverPromociones)
         imageAjustes = findViewById(R.id.imageAjustes)
+        context = this // Initialize context
 
         recyclerViewEntradasPromociones.layoutManager = LinearLayoutManager(this)
 
@@ -57,13 +61,13 @@ class EntradaPromocionActivity : AppCompatActivity() {
             Toast.makeText(this, "No has adquirido ninguna promoción", Toast.LENGTH_SHORT).show()
         }
 
-        val adapter = EntradaPromocionAdapter(entradasPromociones, entradasPromocionesManager)
+        val adapter = EntradaPromocionAdapter(context, entradasPromociones, entradasPromocionesManager)
         adapter.setOnEntradaPromocionDeletedListener(object :
             EntradaPromocionAdapter.OnEntradaPromocionDeletedListener {
-            override fun onEntradaPromocionDeleted(entradaPromocion: EntradaPromociones) {
+            override fun onEntradaPromocionDeleted(entradaPromociones: EntradaPromociones) {
                 Log.d(
                     "EntradaPromocionAct",
-                    "Entrada de promoción eliminada. ID: ${entradaPromocion.id}, Nombre: ${entradaPromocion.nombrePromocion}"
+                    "Entrada de promoción eliminada. ID: ${entradaPromociones.id}, Nombre: ${entradaPromociones.nombrePromocion}"
                 )
 
                 Toast.makeText(
@@ -71,6 +75,7 @@ class EntradaPromocionActivity : AppCompatActivity() {
                     "Promoción eliminada de tu lista",
                     Toast.LENGTH_SHORT
                 ).show()
+                cargarEntradasPromociones()
             }
         })
         recyclerViewEntradasPromociones.adapter = adapter
@@ -88,9 +93,43 @@ class EntradaPromocionActivity : AppCompatActivity() {
 
     }
 
+    private fun cargarEntradasPromociones() {
+        val userId = intent.getIntExtra("USER_ID", -1)
+        val entradasPromociones: MutableList<EntradaPromociones> = if (userId != -1) {
+            entradasPromocionesManager.obtenerEntradasPromocionesPorUsuario(userId).toMutableList()
+        } else {
+            entradasPromocionesManager.obtenerTodasLasEntradasPromociones().toMutableList()
+        }
+
+        if (entradasPromociones.isEmpty()) {
+            Toast.makeText(this, "No has adquirido ninguna promoción", Toast.LENGTH_SHORT).show()
+        }
+        val adapter = EntradaPromocionAdapter(context, entradasPromociones, entradasPromocionesManager)
+        adapter.setOnEntradaPromocionDeletedListener(object :
+            EntradaPromocionAdapter.OnEntradaPromocionDeletedListener {
+            override fun onEntradaPromocionDeleted(entradaPromociones: EntradaPromociones) {
+                Log.d(
+                    "EntradaPromocionAct",
+                    "Entrada de promoción eliminada. ID: ${entradaPromociones.id}, Nombre: ${entradaPromociones.nombrePromocion}"
+                )
+
+                Toast.makeText(
+                    this@EntradaPromocionActivity,
+                    "Promoción eliminada de tu lista",
+                    Toast.LENGTH_SHORT
+                ).show()
+                cargarEntradasPromociones()
+            }
+        })
+        recyclerViewEntradasPromociones.adapter = adapter
+    }
+
     private fun showPopupMenu(anchorView: View) {
         val popupMenu = PopupMenu(this, anchorView, Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.pop_activity, popupMenu.menu)
+
+
+        val userId = obtenerIdUsuarioActual()
 
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
@@ -99,7 +138,7 @@ class EntradaPromocionActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(this, SemanaActivity::class.java))
                     true
                 }
                 R.id.menu_comida -> {
@@ -108,11 +147,15 @@ class EntradaPromocionActivity : AppCompatActivity() {
                 }
 
                 R.id.menu_entradas_comida -> {
-                    startActivity(Intent(this, EntradaComidaActivity::class.java))
+                    val intent = Intent(this, EntradaComidaActivity::class.java)
+                    intent.putExtra("USER_ID", userId)
+                    startActivity(intent)
                     true
                 }
                 R.id.menu_entradas_promociones -> {
-                    startActivity(Intent(this, EntradaPromocionActivity::class.java))
+                    val intent = Intent(this, EntradaPromocionActivity::class.java)
+                    intent.putExtra("USER_ID", userId)
+                    startActivity(intent)
                     true
                 }
                 R.id.menu_entradas_peliculas -> {
@@ -139,5 +182,19 @@ class EntradaPromocionActivity : AppCompatActivity() {
         }
         popupMenu.show()
     }
+
+    private fun obtenerIdUsuarioActual(): Int {
+        val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+
+        if (usuarioId == -1) {
+            Log.e("NombreDeTuActividad", "No se encontró un usuario logueado")
+
+        }
+        Log.d("obtenerIdUsuarioActual", "El id es $usuarioId")
+        return usuarioId
+    }
+
+
 
 }

@@ -1,10 +1,6 @@
 package com.example.cine360.Adapter
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cine360.DataBase.Tablas.Promociones
 import com.example.cine360.R
 
@@ -22,48 +19,88 @@ class PromocionesAdminAdapter(
     private val promocionesList: List<Promociones>,
     private val onEditClick: (Promociones) -> Unit,
     private val onDeleteClick: (Promociones) -> Unit
-): RecyclerView.Adapter<PromocionesAdminAdapter.PromocionViewHolder>() {
+) : RecyclerView.Adapter<PromocionesAdminAdapter.PromocionesViewHolder>() {
 
-    inner class PromocionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val textViewTituloPromocion: TextView = itemView.findViewById(R.id.textViewTituloPromocionAmin)
-        val imagenViewPromocion: ImageView = itemView.findViewById(R.id.imagenPromocionAdmin) as ImageView
-        val textViewDescripcion: TextView = itemView.findViewById(R.id.textViewDescripcionPromocionAdmin)
-        val textviewPrecio: TextView = itemView.findViewById(R.id.textViewPrecioPromocion)
-        val buttonEdit: Button = itemView.findViewById(R.id.buttonEditPromocion)
-        val buttonDeletePromocion: Button = itemView.findViewById(R.id.buttonDeletePromocion)
+    private val currentUserId: Int by lazy {
+        obtenerIdUsuarioActual(context)
     }
 
+    inner class PromocionesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val textViewNombrePromociones: TextView? = itemView.findViewById(R.id.textViewNombrePromocion) // Make them nullable
+        val textViewDescripcionPromociones: TextView? = itemView.findViewById(R.id.textViewDescripcionProm)
+        val textViewPrecioPromocion: TextView? = itemView.findViewById(R.id.textViewPrecioPromocion)
+        val imagenPromociones: ImageView? = itemView.findViewById(R.id.imagenPromocion)
+        val buttonEditPromociones: Button? = itemView.findViewById(R.id.buttonEditPromocion)
+        val buttonDeletePromociones: Button? = itemView.findViewById(R.id.buttonDeletePromocion)
 
-    override fun onCreateViewHolder(parent:ViewGroup, viewType: Int): PromocionViewHolder {
+        init {
+            // Glide.with(itemView.context).clear(imagenPromociones)  // Removed from here
+        }
+    }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PromocionesViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_promociones_admin, parent, false)
-        return  PromocionViewHolder(itemView)
-
+        return PromocionesViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: PromocionViewHolder, position:Int){
+    override fun onBindViewHolder(holder: PromocionesViewHolder, position: Int) {
+        val currentPromocion = promocionesList[position]
+        Log.d("PromocionAdminAdapter", "Procesando promocion en posición $position: ${currentPromocion.nombre}")
 
-        val curretnPromocion = promocionesList[position]
-        holder.textViewTituloPromocion.text = "Title: ${curretnPromocion.nombre}"
-        holder.textViewDescripcion.text = "Title: ${curretnPromocion.descripcion}"
-        holder.textviewPrecio.text = "Title: ${curretnPromocion.precio}"
+        // Use the null safety operator ?. to avoid NullPointerExceptions.
+        holder.textViewNombrePromociones?.text = currentPromocion.nombre
+        holder.textViewDescripcionPromociones?.text = "Descripción: ${currentPromocion.descripcion}"
+        holder.textViewPrecioPromocion?.text = "Precio: ${currentPromocion.precio.toString()}"
 
+        val imageName = currentPromocion.imagen
+        val resourceId = context.resources.getIdentifier(
+            imageName.substringBeforeLast("."),
+            "drawable",
+            context.packageName
+        )
 
-        Glide.with(context)
-            .load(curretnPromocion.imagen)
-            .into(holder.imagenViewPromocion)
-
-        holder.buttonEdit.setOnClickListener{
-            onEditClick(curretnPromocion)
+        if (resourceId != 0) {
+            holder.imagenPromociones?.let { // Use holder.imagenPromociones?.let
+                Glide.with(holder.itemView.context)
+                    .load(resourceId)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.error_imagen)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(it)
+            }
+        } else {
+            Log.e("PromocionesAdminAdapter", "Resource not found for image: $imageName")
+            holder.imagenPromociones?.setImageResource(R.drawable.error_imagen)
         }
 
-        holder.buttonDeletePromocion.setOnClickListener{
-            onDeleteClick(curretnPromocion)
+        holder.buttonEditPromociones?.setOnClickListener {
+            onEditClick(currentPromocion)
         }
 
+        holder.buttonDeletePromociones?.setOnClickListener {
+            onDeleteClick(currentPromocion)
+        }
     }
-
 
     override fun getItemCount() = promocionesList.size
+
+
+    override fun onViewRecycled(holder: PromocionesViewHolder) {
+        super.onViewRecycled(holder)
+        Log.d("RECYCLER_DEBUG", "ViewHolder reciclado para posición: ${holder.adapterPosition}")
+        holder.imagenPromociones?.let{
+            Glide.with(holder.itemView.context).clear(it)
+        }
+    }
+
+    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+        if (usuarioId == -1) {
+            Log.e("PromocionAdapter", "No se encontró un usuario logueado")
+        }
+        return usuarioId
+    }
 }

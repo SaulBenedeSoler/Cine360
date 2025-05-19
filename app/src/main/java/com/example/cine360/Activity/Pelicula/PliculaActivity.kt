@@ -18,6 +18,7 @@ import com.example.cine360.Activity.Entrada.EntradaPromocionActivity
 import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.Activity.LoginYRegister.AjustesUsuarioActivity
 import com.example.cine360.Activity.Promociones.PromocionesActivity
+import com.example.cine360.Activity.Semana.SemanaActivity
 import com.example.cine360.Adapter.PeliculaAdapter
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.PeliculaManager
@@ -132,7 +133,7 @@ class PeliculaActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(this, SemanaActivity::class.java))
                     true
                 }
                 R.id.menu_comida -> {

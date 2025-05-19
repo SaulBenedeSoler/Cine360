@@ -73,8 +73,8 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
             val sala = Sala(
                 id = 0,
                 nombre = "Sala ${pelicula.titulo.take(3).uppercase()}",
-                maximoAsientos = 5,
-                maximoFilas = 2,
+                maximoAsientos = 80,
+                maximoFilas = 8,
                 peliculaId = pelicula.id.toInt(),
                 precio = 8.5,
                 horario = horario
@@ -82,7 +82,7 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
 
             val id = insertarSala(db, sala)
 
-            val asientosIniciales = "O,O,O,O,O,O,O,O,O,O"
+            val asientosIniciales = (0 until sala.maximoAsientos).joinToString(",") { "O" }
             actualizarAsientos(db, id, asientosIniciales)
 
             lastId = id
@@ -127,7 +127,13 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
             put(DataBaseHelper.COLUMN_PRECIO_SALA, sala.precio)
             put(DataBaseHelper.COLUMN_HORARIO, sala.horario)
         }
-        return db.insert(DataBaseHelper.TABLE_SALA, null, values)
+        val insertedId = db.insert(DataBaseHelper.TABLE_SALA, null, values)
+        if (insertedId == -1L) {
+            Log.e(TAG, "Error al insertar sala: ${sala.nombre}")
+        } else {
+            Log.d(TAG, "Sala insertada con ID: $insertedId, Nombre: ${sala.nombre}")
+        }
+        return insertedId
     }
 
     fun actualizarSala(sala: Sala): Int = dbHelper.writableDatabase.use { writableDatabase ->
@@ -139,12 +145,14 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
             put(DataBaseHelper.COLUMN_PRECIO_SALA, sala.precio)
             put(DataBaseHelper.COLUMN_HORARIO, sala.horario)
         }
-        writableDatabase.update(
+        val rowsUpdated = writableDatabase.update(
             DataBaseHelper.TABLE_SALA,
             values,
             "${DataBaseHelper.COLUMN_SALA_ID} = ?",
             arrayOf(sala.id.toString())
         )
+        Log.d(TAG, "Sala actualizada: ${sala.nombre}, Filas afectadas: $rowsUpdated")
+        return rowsUpdated
     }
 
     fun obtenerAsientos(salaId: Long): String? = dbHelper.readableDatabase.use { readableDatabase ->
@@ -196,12 +204,14 @@ class SalaManager(private val dbHelper: DataBaseHelper) {
         val values = ContentValues().apply {
             put(DataBaseHelper.COLUMN_MAXIMOASIENTOS, asientos)
         }
-        return db.update(
+        val updatedRows = db.update(
             DataBaseHelper.TABLE_SALA,
             values,
             "${DataBaseHelper.COLUMN_SALA_ID} = ?",
             arrayOf(salaId.toString())
         )
+        Log.d(TAG, "Asientos actualizados para sala ID $salaId.  Filas afectadas: $updatedRows")
+        return updatedRows
     }
 
     fun obtenerSalaPorId(db: SQLiteDatabase, id: Long): Sala? {

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Título de la Película" />
+        tools:text="Título de la Comida" />
 
     <ImageView
         android:id="@+id/imagenComidaAdmin"
@@ -25,6 +25,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
+        android:contentDescription="Imagen de comida"
         app:layout_constraintTop_toBottomOf="@id/textViewTituloComidaAmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/imagenComidaAdmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Descripción de la película" />
+        tools:text="Descripción de la comida" />
 
     <TextView
         android:id="@+id/textViewPrecioPromocion"
@@ -49,12 +50,11 @@
         android:layout_marginTop="4dp"
         android:textColor="@android:color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/textViewDescripcionComidaAdmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Género: Comedia" />
-
-
+        tools:text="Precio: $0.00" />
 
     <LinearLayout
         android:id="@+id/linearLayoutBotonesComida"
@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Modificar"
+            android:backgroundTint="@color/Header"
             android:layout_marginEnd="8dp" />
 
         <Button
@@ -80,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Eliminar"
+            android:backgroundTint="@color/Header"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>

@@ -95,9 +95,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Iniciar Sesión"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="@color/Header"/>
 
+            <TextView
+                android:id="@+id/textViewRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿No tienes cuenta? Regístrate aquí"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="8dp"
+                android:clickable="true"
+                android:focusable="true" />
 
+            <TextView
+                android:id="@+id/textViewForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¿Olvidaste tu contraseña?"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:clickable="true"
+                android:focusable="true" />
 
         </LinearLayout>
 

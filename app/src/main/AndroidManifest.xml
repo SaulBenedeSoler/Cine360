@@ -37,6 +37,10 @@
         <activity android:name=".Activity.Entrada.EntradaPromocionActivity" android:exported="false"/>
         <activity android:name=".Activity.Comida.ComidaActivity" android:exported="false"/>
         <activity android:name=".Activity.Entrada.EntradaComidaActivity" android:exported="false"/>
+        <activity android:name=".Activity.Comida.ComidaAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Promociones.PromocionesAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Promociones.AñadirEditarPromocionAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.Comida.AñadirEditarComidaAdminActivity" android:exported="false"/>
     </application>
 
 </manifest>

@@ -19,6 +19,8 @@ import com.example.cine360.Activity.Entrada.EntradaPromocionActivity
 import com.example.cine360.Activity.Login.LoginActivity
 import com.example.cine360.Activity.LoginYRegister.AjustesUsuarioActivity
 import com.example.cine360.Activity.Pelicula.PeliculaActivity
+import com.example.cine360.Activity.Semana.SemanaActivity
+import com.example.cine360.Adapter.PromocionesAdapter
 import com.example.cine360.DataBase.DataBaseHelper
 import com.example.cine360.DataBase.Manager.EntradasPromocionesManager
 import com.example.cine360.DataBase.Tablas.Promociones
@@ -35,7 +37,7 @@ class PromocionesActivity : AppCompatActivity() {
     private lateinit var promocionesAdapter: PromocionesAdapter
     private lateinit var dbHelper: DataBaseHelper
     private lateinit var entradasPromocionesManager: EntradasPromocionesManager
-    private var listaPromociones: List<Promociones> = emptyList()
+    private var listaPromociones: MutableList<Promociones> = mutableListOf()
     private lateinit var imageAjustes: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,19 +68,24 @@ class PromocionesActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val db = dbHelper.readableDatabase
-                listaPromociones = obtenerPromocionesDesdeDB(db)
+                val comidaList = obtenerPromocionesDesdeDB(db)
                 db.close()
                 withContext(Dispatchers.Main) {
+                    listaPromociones.clear()
+                    listaPromociones.addAll(comidaList)
                     promocionesAdapter.actualizarPromociones(listaPromociones)
                 }
-            } catch (e: Exception) {
-                Log.e("PromocionesActivity", "Error al cargar promociones: ${e.message}")
-                withContext(Dispatchers.Main) {
 
-                    Toast.makeText(this@PromocionesActivity, "Failed to load promotions", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Log.e("ComidaActivity", "Error al cargar comida: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@PromocionesActivity, "Failed to load comida", Toast.LENGTH_SHORT).show()
                 }
+
             }
         }
+
+
     }
 
     private fun obtenerPromocionesDesdeDB(db: SQLiteDatabase): List<Promociones> {
@@ -100,10 +107,10 @@ class PromocionesActivity : AppCompatActivity() {
                 while (it.moveToNext()) {
                     val id = it.getInt(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_ID))
                     val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_NOMBRE))
-                    val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION))
                     val imagen = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_IMAGEN))
+                    val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_DESCRIPCION))
                     val precio = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PROMOCION_PRECIO))
-                    val promocion = Promociones(id, nombre, descripcion, imagen, precio)
+                    val promocion = Promociones(id, nombre, imagen, descripcion , precio)
                     lista.add(promocion)
                 }
             }
@@ -126,7 +133,7 @@ class PromocionesActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_peliculas -> {
-                    startActivity(Intent(this, PeliculaActivity::class.java))
+                    startActivity(Intent(this, SemanaActivity::class.java))
                     true
                 }
                 R.id.menu_comida -> {

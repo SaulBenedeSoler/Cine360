@@ -11,13 +11,14 @@ import com.example.cine360.DataBase.Manager.DirectorManager
 import com.example.cine360.DataBase.Manager.PeliculaManager
 import com.example.cine360.DataBase.Manager.PromocionesManager
 import com.example.cine360.DataBase.Manager.SalaManager
+import com.example.cine360.DataBase.Tablas.Sala
 
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         const val DATABASE_NAME = "cine360.db"
-        const val DATABASE_VERSION = 42
+        const val DATABASE_VERSION = 52
         private const val tag = "DataBaseHelper"
 
         /*Tabla Usuarios*/
@@ -75,7 +76,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_PROMOCION_ID = "promocion_id"
         const val COLUMN_PROMOCION_NOMBRE = "promocion_nombre"
         const val COLUMN_PROMOCION_DESCRIPCION = "promocion_descripcion"
-        const val COLUMN_PROMOCION_IMAGEN = "promocion_imagen" // Correcto, esta vez se usa.
+        const val COLUMN_PROMOCION_IMAGEN = "promocion_imagen"
         const val COLUMN_PROMOCION_PRECIO = "promocion_precio"
 
         /*Tabla comida*/
@@ -117,103 +118,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_ENTRADA_COMIDA_PRECIO_COMIDA = "precioComida"
         const val COLUMN_ENTRADA_COMIDA_IMAGEN_COMIDA = "imagenComida"
 
-
-        private val CREATE_TABLE_USERS = ("CREATE TABLE " + TABLE_USERS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_USERNAME + " TEXT UNIQUE,"
-                + COLUMN_PASSWORD + " TEXT,"
-                + COLUMN_IS_ADMIN + " INTEGER,"
-                + COLUMN_NOMBRE + " TEXT,"
-                + COLUMN_EMAIL + " TEXT" + ")")
-
-        private val CREATE_TABLE_Pelicula = ("CREATE TABLE " + TABLE_PELICULA + "("
-                + COLUMN_Pelicula_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUM_TITULO + " TEXT,"
-                + COLUMN_DESCRIPCION + " TEXT,"
-                + COLUMN_GENERO + " TEXT,"
-                + COLUMN_FECHA_LANZAMIENTO + " TEXT,"
-                + COLUMN_DURACION + " INTEGER,"
-                + COLUMN_PELICULA_IMAGEN + " TEXT,"
-                + COLUMN_TRAILER + " TEXT,"
-                + COLUMN_SEMANA + " TEXT" + ")")
-
-        private val CREATE_TABLE_Actor = ("CREATE TABLE " + TABLE_ACTOR + "("
-                + COLUMN_ACTOR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_ACTOR_NOMBRE + " TEXT,"
-                + COLUMN_ACTOR_APELLIDO + " TEXT,"
-                + COLUMN_PELICULA_ID + " INTEGER"
-                + ")")
-
-        private val CREATE_TABLE_Director = ("CREATE TABLE " + TABLE_DIRECTOR + "("
-                + COLUMN_DIRECTOR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_DIRECTOR_NOMBRE + " TEXT,"
-                + COLUMN_DIRECTOR_APELLIDO + " TEXT,"
-                + COLUMN_PELICULAID + " INTEGER"
-                + ")")
-
-        private val CREATE_TABLE_Semana = ("CREATE TABLE " + TABLE_SEMANA + "("
-                + COLUMN_SEMANA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_SEMANA_NOMBRE + " TEXT"
-                + ")")
-
-        private val CREATE_TABLE_Sala = ("CREATE TABLE " + TABLE_SALA + "("
-                + COLUMN_SALA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_SALA_NOMBRE + " TEXT,"
-                + COLUMN_MAXIMOASIENTOS + " INTEGER,"
-                + COLUMN_MAXIMOFILAS + " INTEGER,"
-                + COLUMN_HORARIO + " TEXT,"
-                + COLUMN_PRECIO_SALA + " DOUBLE,"
-                + COLUMN_PELICULA + " INTEGER"
-                + ")")
-
-        private val CREATE_TABLE_Promociones = ("CREATE TABLE " + TABLE_PROMOCIONES + "("
-                + COLUMN_PROMOCION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_PROMOCION_NOMBRE + " TEXT NOT NULL, "  // NOT NULL agregado
-                + COLUMN_PROMOCION_DESCRIPCION + " TEXT, "
-                + COLUMN_PROMOCION_PRECIO + " REAL NOT NULL, "    // Corrección de tipo y NOT NULL
-                + COLUMN_PROMOCION_IMAGEN + " TEXT" // Aquí está la columna correcta
-                + ")")
-
-        private val CREATE_TABLE_Comida = ("CREATE TABLE " + TABLE_COMIDA + "("
-                + COLUMN_COMIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_COMIDA_NOMBRE + " TEXT NOT NULL,"
-                + COLUMN_COMIDA_DESCRIPCION + " TEXT,"
-                + COLUMN_COMIDA_PRECIO + " REAL NOT NULL,"
-                + COLUMN_COMIDA_IMAGEN + " TEXT"
-                + ")")
-
-        private val CREATE_TABLE_Entrada = ("CREATE TABLE " + TABLE_ENTRADA + "("
-                + COLUMN_ENTRADA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_USERID + " INTEGER,"
-                + COLUMN_PELI_ID + " INTEGER,"
-                + COLUMN_SALA + " TEXT,"
-                + COLUMN_ASIENTO + " INTEGER,"
-                + COLUMN_FILA + " INTEGER,"
-                + COLUMN_SALA_HORA + " TEXT,"
-                + COLUMN_PELICULA_NOMBRE + " TEXT"
-                + ")")
-
-        private val CREATE_TABLE_ENTRADA_COMIDA= ("CREATE TABLE " + TABLE_ENTRADA_COMIDA + "("
-                + COLUMN_ENTRADA_COMIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_ENTRADA_COMIDA_USUARIO_ID + " INTEGER,"
-                + COLUMN_ENTRADA_COMIDA_COMIDA_ID + " INTEGER,"
-                + COLUMN_ENTRADA_COMIDA_NOMBRE_COMIDA + " TEXT,"
-                + COLUMN_ENTRADA_COMIDA_DESCRIPCION_COMIDA + " TEXT,"
-                + COLUMN_ENTRADA_COMIDA_PRECIO_COMIDA + " REAL,"
-                + COLUMN_ENTRADA_COMIDA_IMAGEN_COMIDA + " TEXT"
-                + ")")
-
-
-
-        private val CREATE_TABLE_ENTRADA_PROMOCIONES = ("CREATE TABLE " + TABLE_ENTRADA_PROMOCIONES + "("
-                + COLUMN_ENTRADA_PROMOCIONES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COLUMN_ENTRADA_PROMOCIONES_USUARIO_ID + " INTEGER,"
-                + COLUMN_ENTRADA_PROMOCIONES_PROMOCION_ID + " INTEGER,"
-                + COLUMN_ENTRADA_PROMOCIONES_NOMBRE_PROMOCION + " TEXT,"
-                + COLUMN_ENTRADA_PROMOCIONES_DESCRIPCION_PROMOCION + " TEXT,"
-                + COLUMN_ENTRADA_PROMOCIONES_PRECIO_PROMOCION + " REAL,"
-                + COLUMN_ENTRADA_PROMOCIONES_IMAGEN_PROMOCION + " TEXT"
-                + ")")
 
 
     }
@@ -377,6 +281,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         val promocionesManager = PromocionesManager(this)
         promocionesManager.insertarPromocionesPrecargadas(db)
+
+
 
         val comidaManager= ComidaManager(this)
         comidaManager.insertarCOmidaPrecargada(db)

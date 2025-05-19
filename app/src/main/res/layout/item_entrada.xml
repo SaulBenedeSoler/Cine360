@@ -1,53 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/tvPeliculaNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nombre de la Película"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvSala"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sala: Sala 1"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/tvAsiento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Asiento: 10"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/tvFila"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fila: A"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/tvHorario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Horario: 19:00"
-        android:textSize="16sp" />
-
-    <Button
-        android:id="@+id/btnEliminarEntrada"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Eliminar entrada"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#FF0000" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvPeliculaNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            tools:text="Nombre de la Película" />
+
+        <TextView
+            android:id="@+id/tvSala"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Sala: Sala 1" />
+
+        <TextView
+            android:id="@+id/tvAsiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Asiento: 10" />
+
+        <TextView
+            android:id="@+id/tvFila"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Fila: A" />
+
+        <TextView
+            android:id="@+id/tvHorario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            tools:text="Horario: 19:00" />
+
+        <Button
+            android:id="@+id/btnEliminarEntrada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:text="Eliminar entrada"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/Header" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

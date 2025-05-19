@@ -1,5 +1,6 @@
 package com.example.cine360.Adapter
 
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.example.cine360.DataBase.Tablas.Pelicula
 import com.example.cine360.R
 
 class SemanaAdapter(
+    private val context: Context, // Added context parameter
     private val semanas: List<String>,
     private val peliculaManager: PeliculaManager,
     private val onItemClick: (String) -> Unit
@@ -24,6 +26,9 @@ class SemanaAdapter(
     private val expandedState = mutableMapOf<Int, Boolean>()
     private val dbHelper = peliculaManager.dbHelper
     private val db = dbHelper.readableDatabase
+    private val currentUserId: Int by lazy {  //ADDED THIS
+        obtenerIdUsuarioActual(context)
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textViewSemana: TextView = view.findViewById(R.id.textViewSemana)
@@ -127,4 +132,13 @@ class SemanaAdapter(
     }
 
     override fun getItemCount() = semanas.size
+
+    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val usuarioId = sharedPreferences.getInt("usuario_id", -1)
+        if (usuarioId == -1) {
+            Log.e("PromocionesAdapter", "No se encontró un usuario logueado")
+        }
+        return usuarioId
+    }
 }

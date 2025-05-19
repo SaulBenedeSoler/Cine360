@@ -22,7 +22,7 @@
     <ImageView
         android:id="@+id/imagenPelicula"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="500dp"
         android:layout_marginTop="8dp"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toBottomOf="@id/textViewTituloPelicula"
@@ -106,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Modificar"
+            android:backgroundTint="@color/Header"
             android:layout_marginEnd="8dp" />
 
         <Button
@@ -114,6 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Eliminar"
+            android:backgroundTint="@color/Header"
             android:layout_marginStart="8dp" />
 
     </LinearLayout>
