@@ -13,7 +13,7 @@
 
 <p>El proyecto consta de una innovadora idea la cual consiste en la implementación de 7 películas por semana (1 por día) y que estas tienen una temática concreta que en este caso son los diferentes géneros del cine.</p>
 
-<p>El proyecto en cuanto a usuarios cuenta con dos que son el usuario o "persona que interactua con la web" y el administrador encargado de llevar la gestióny el control de la aplicación</p>
+<p>El proyecto en cuanto a usuarios cuenta con dos que son el usuario o "persona que interactua con la aplicación" y el administrador encargado de llevar la gestióny el control de la aplicación</p>
 
 <p>¿Qué funciones o acciones podra realizar el usuario?</p>
 
