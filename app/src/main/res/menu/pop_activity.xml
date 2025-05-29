@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_usuario"
+        android:title="Ajustes de usuario" />
+
+    <item
+        android:id="@+id/menu_promociones"
+        android:title="Promociones" />
+    <item
+        android:id="@+id/menu_peliculas"
+        android:title="Películas" />
+
+    <item
+        android:id="@+id/menu_comida"
+        android:title="Menus" />
+
+    <item
+        android:id="@+id/menu_entradas_comida"
+        android:title="Entradas Comida" />
+    <item
+        android:id="@+id/menu_entradas_promociones"
+        android:title="Entradas de promociones" />
+    <item
+        android:id="@+id/menu_entradas_peliculas"
+        android:title="Entradas de películas" />
+
+    <item
+        android:id="@+id/menu_cerrar_sesion"
+        android:title="Cerrar sesion" />
+</menu>
