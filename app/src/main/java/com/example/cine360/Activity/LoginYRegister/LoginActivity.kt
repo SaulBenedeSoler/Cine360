@@ -22,16 +22,20 @@ import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
 
+    /*Declaramos las varibales que utilizaremos para asignarles objetos xml o otros arhcivos*/
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
     private lateinit var textViewRegister: TextView
     private lateinit var dbHelper: DataBaseHelper
 
+    /*Funcion que se usa al iniciar la app*/
     override fun onCreate(savedInstanceState: Bundle?) {
+        /*Declaramos el xml sobre el cual trabajara este archivo*/
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        /*Creamos una isntancia de la base de datos y usamos las variables anteriormente declaradas
+        * para asignarles un objeto xml*/
         editTextEmail = findViewById(R.id.etUsername)
         editTextPassword = findViewById(R.id.etPassword)
         buttonLogin = findViewById(R.id.btnLogin)
@@ -39,7 +43,8 @@ class LoginActivity : AppCompatActivity() {
         dbHelper = DataBaseHelper(this)
 
 
-
+        /*Al pulsar sobre el boton comprobara que tood sea correcto y iniciar sesion y
+        * en caso de error se lo indicara al usuario*/
         buttonLogin.setOnClickListener {
             val email = editTextEmail.text.toString().trim()
             val password = editTextPassword.text.toString().trim()
@@ -53,15 +58,16 @@ class LoginActivity : AppCompatActivity() {
 
 
         }
-
+        /*Al darle al boton nos llevara al actiivty de registro y iniciara la accion*/
         textViewRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
     }
-
+    /*Funcion para inicar sesion*/
     private fun loginUser(email: String, password: String) {
+        /*Mediante corrutinas obtenemos todos los datos de los usuarios a rellenar*/
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val db = dbHelper.readableDatabase
@@ -77,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                     arrayOf(email, password),
                     null, null, null
                 )
-
+                /*Comprobamos que todos los datos son crrectos y se iniciara sesion*/
                 withContext(Dispatchers.Main) {
                     if (cursor != null && cursor.moveToFirst()) {
                         val idColumnIndex = cursor.getColumnIndex(DataBaseHelper.COLUMN_ID)
@@ -95,7 +101,8 @@ class LoginActivity : AppCompatActivity() {
                                 "Inicio de sesión exitoso para el usuario ID: $userId, Nombre: $userName, isAdmin: $isAdmin"
                             )
 
-
+                            /*En caso de de ser administrador se le llevara a su archivo correspondiente y en caso de ser usuario normal
+                            * se le llevara al index */
                             val intent = if (isAdmin) {
                                 Intent(this@LoginActivity, AdminActivity::class.java)
                             } else {
@@ -103,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                             }
                             startActivity(intent)
                             finish()
-
+                        /*En caso de error se indicara y se le mostrara al usuario*/
                         } else {
                             Toast.makeText(
                                 this@LoginActivity,
@@ -124,6 +131,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     cursor?.close()
                 }
+                /*Se cierra la conexion con la base de datos*/
                 db.close()
             } catch (e: Exception) {
                 Log.e("LoginActivity", "Error en el inicio de sesión: ${e.message}")
@@ -137,7 +145,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
+        /*COmprobamos que toodos los datos se han introducido y guardado correctamente en la base de datos
+        * y se indicara al usuario de esto*/
     private fun guardarDatosUsuario(userId: Int, userName: String, userEmail: String, isAdmin: Boolean) {
         try {
             val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -159,7 +168,7 @@ class LoginActivity : AppCompatActivity() {
             Log.e("LoginActivity", "Error al guardar los datos del usuario: ${e.message}")
         }
     }
-
+    /*Funcion con la cual comprobamos el id de usuario y cerramos sesion*/
     companion object {
         fun cerrarSesion(context: Context) {
             val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/admin_menu_peliculas"
+        android:title="Administrar Películas" />
+    <item
+        android:id="@+id/admin_menu_promociones"
+        android:title="Administrar Promociones" />
+    <item
+        android:id="@+id/admin_menu_comida"
+        android:title="Administrar Comida" />
+    <item
+        android:id="@+id/admin_menu_usuarios"
+        android:title="Administrar Usuarios" />
+    <item
+        android:id="@+id/admin_menu_ajustes"
+        android:title="Ajustes de Usuario " />
+
+    <item
+        android:id="@+id/menu_cerrar_sesion"
+        android:title="Cerrar sesion" />
+</menu>

@@ -9,6 +9,7 @@ import com.example.cine360.DataBase.Tablas.EntradaPromociones
 
 class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
 
+    /*Declaramos variables que mas adelante usaremos*/
     private val TABLE_NAME = DataBaseHelper.TABLE_ENTRADA_PROMOCIONES
     private val COLUMN_ID = DataBaseHelper.COLUMN_ENTRADA_PROMOCIONES_ID
     private val COLUMN_USUARIO_ID = DataBaseHelper.COLUMN_ENTRADA_PROMOCIONES_USUARIO_ID
@@ -18,26 +19,13 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
     private val COLUMN_PRECIO_PROMOCION = DataBaseHelper.COLUMN_ENTRADA_PROMOCIONES_PRECIO_PROMOCION
     private val COLUMN_IMAGEN_PROMOCION = DataBaseHelper.COLUMN_ENTRADA_PROMOCIONES_IMAGEN_PROMOCION
 
-    fun crearEntradaPromocion(entradaPromocion: EntradaPromociones): Long {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_USUARIO_ID, entradaPromocion.usuarioId)
-            put(COLUMN_PROMOCION_ID, entradaPromocion.promocionId)
-            put(COLUMN_NOMBRE_PROMOCION, entradaPromocion.nombrePromocion)
-            put(COLUMN_DESCRIPCION_PROMOCION, entradaPromocion.descripcionPromocion)
-            put(COLUMN_PRECIO_PROMOCION, entradaPromocion.precioPromocion)
-            put(COLUMN_IMAGEN_PROMOCION, entradaPromocion.imagenPromocion)
-        }
-
-        val id = db.insert(TABLE_NAME, null, values)
-        db.close()
-        return id
-    }
-
+    /*Funcion para obtener las entradas por usuario*/
     fun obtenerEntradasPromocionesPorUsuario(usuarioId: Int): List<EntradaPromociones> {
+        /*Variables de entradas para obtener una lista con todas las entradas*/
         val lista = mutableListOf<EntradaPromociones>()
         val db = dbHelper.readableDatabase
 
+        /*Obtenemos todos los datos de la entrda*/
         val projection = arrayOf(
             COLUMN_ID,
             COLUMN_USUARIO_ID,
@@ -47,9 +35,10 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
             COLUMN_PRECIO_PROMOCION,
             COLUMN_IMAGEN_PROMOCION
         )
+        /*Seleccionamos el id del usuario*/
         val selection = "$COLUMN_USUARIO_ID = ?"
         val selectionArgs = arrayOf(usuarioId.toString())
-
+        /*Consultamos la tabla de entradas para obtener todas*/
         val cursor = db.query(
             TABLE_NAME,
             projection,
@@ -59,7 +48,7 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
             null,
             null
         )
-
+        /*Iteramos sobre la entrada para obtener todas*/
         cursor?.use {
             while (it.moveToNext()) {
                 val entradaPromocion = crearEntradaPromocionDesdeCursor(it)
@@ -71,10 +60,13 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
         return lista
     }
 
+    /*Funcion para obtener todas las entradas de promociones*/
     fun obtenerTodasLasEntradasPromociones(): List<EntradaPromociones> {
+        /*Cremos una lista con las entradas*/
         val lista = mutableListOf<EntradaPromociones>()
+        /*Instanciamos ocn la base de datos*/
         val db = dbHelper.readableDatabase
-
+        /*Obtenemos los datos*/
         val projection = arrayOf(
             COLUMN_ID,
             COLUMN_USUARIO_ID,
@@ -84,7 +76,7 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
             COLUMN_PRECIO_PROMOCION,
             COLUMN_IMAGEN_PROMOCION
         )
-
+        /*Hacemos una consulta query para obtener todos los datos de latabla*/
         val cursor = db.query(
             TABLE_NAME,
             projection,
@@ -94,7 +86,7 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
             null,
             null
         )
-
+        /*Llamamos a la funcion para crear entradas y lo añadimos a la lista*/
         cursor?.use {
             while (it.moveToNext()) {
                 val entradaPromocion = crearEntradaPromocionDesdeCursor(it)
@@ -106,6 +98,7 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
         return lista
     }
 
+    /*En esta funcion usamos el cursos para crear la entrad y lo hacemos mediante la llamada a las diferentes variables anteriormente delcarasdas*/
     private fun crearEntradaPromocionDesdeCursor(cursor: Cursor): EntradaPromociones {
         val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
         val usuarioId = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_USUARIO_ID))
@@ -117,11 +110,14 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
         return EntradaPromociones(id, usuarioId, promocionId, nombre, descripcion, precio,imagen )
     }
 
+    /*Funcion para eliminar la entrada*/
     fun eliminarEntradaPromocion(id: Int): Int {
+        /*Declaramos una instancia con la base de datos*/
         val db = dbHelper.writableDatabase
+        /*Obtenemos el id de la entrada*/
         val selection = "$COLUMN_ID = ?"
         val selectionArgs = arrayOf(id.toString())
-
+        /*Realizamos una consulta para borra entrada de la tabla de la entrada*/
         val deletedRows = db.delete(
             TABLE_NAME,
             selection,
@@ -131,7 +127,7 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
         db.close()
         return deletedRows
     }
-
+    /*Funcion para crear entradas de promociones y llamamos a los datos que contiene esa tabla*/
     fun crearEntrada(
         usuarioId: Int,
         promocionId: Int,
@@ -140,7 +136,9 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
         precioPromocion: Double,
         imagenPromocion: String?
     ): Long {
+        /*Instanciamos la base de datos*/
         val db = dbHelper.writableDatabase
+        /*Obtenemos los valores de la base de datos y lo asignamos a las variables anteriormente creadas*/
         val values = ContentValues().apply {
             put(COLUMN_USUARIO_ID, usuarioId)
             put(COLUMN_PROMOCION_ID, promocionId)
@@ -149,9 +147,9 @@ class EntradasPromocionesManager(private val dbHelper: DataBaseHelper) {
             put(COLUMN_PRECIO_PROMOCION, precioPromocion)
             put(COLUMN_IMAGEN_PROMOCION, imagenPromocion)
         }
+        /*Obtenemos el id de la tabla de entradas comida*/
         val newRowId = db.insert(TABLE_NAME, null, values)
         db.close()
         return newRowId
     }
 }
-

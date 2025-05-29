@@ -20,7 +20,6 @@
             android:id="@+id/textViewSalaTitulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/Header"
             android:gravity="center"
             android:padding="16dp"
             android:text="Sala de emisión"
@@ -35,7 +34,7 @@
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
-            android:contentDescription="Logo"
+            android:contentDescription="Ajustes"
             android:src="@drawable/ajsutes"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,35 +56,36 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textViewPantalla"
-        android:layout_width="0dp"
+        android:id="@+id/textViewLeyenda"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:background="#E0E0E0"
-        android:padding="8dp"
-        android:text="PANTALLA"
-        android:textAlignment="center"
-        android:textSize="16sp"
+        android:text="Verde: Disponible | Rojo: Ocupado"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/headerLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerLayout" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewAsientos"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:scrollbars="vertical"
-        android:background="@color/fondo"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayoutBotones"
-        app:layout_constraintEnd_toEndOf="parent"
+    <LinearLayout
+        android:id="@+id/footerIcons"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/Header"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPantalla" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cine 360 - 2025"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutBotones"
@@ -108,33 +108,38 @@
             android:text="Reservar Asiento"
             android:textAllCaps="false"
             android:textSize="14sp" />
-
-
-
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textViewLeyenda"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Verde: Disponible | Azul: Seleccionado | Rojo: Ocupado"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPantalla" />
-
-    <LinearLayout
-        android:id="@+id/footerIcons"
+        android:id="@+id/textViewPantalla"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#A8D9F2"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:background="#E0E0E0"
+        android:padding="8dp"
+        android:text="PANTALLA"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutBotones"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewAsientos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:scrollbars="vertical"
+        android:background="@color/fondo"
+        app:layout_constraintBottom_toTopOf="@+id/textViewPantalla"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLeyenda" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

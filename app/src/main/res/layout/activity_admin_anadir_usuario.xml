@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondo"
-    tools:context=".Activity.Login.LoginActivity">
+    tools:context=".Activity.LoginYRegister.AñadirEditarUsuarioAdminActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headerLayout"
@@ -20,27 +20,14 @@
             android:id="@+id/textViewTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/Header"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Cine 360"
-            android:textSize="24sp"
+            android:text="Añadir/Editar Usuario"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageAjustes"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="Logo"
-            android:src="@drawable/ajsutes"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
+            app:layout_constraintEnd_toStartOf="@+id/imageAjustes"
+            app:layout_constraintStart_toEndOf="@+id/imageViewLogo"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
@@ -48,29 +35,35 @@
             android:layout_height="70dp"
             android:layout_marginStart="16dp"
             android:contentDescription="Logo"
-            android:src="@drawable/logo"
             android:scaleType="fitCenter"
+            android:src="@drawable/logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
 
+        <ImageView
+            android:id="@+id/imageAjustes"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Ajustes"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ajsutes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"
-        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/footerLayout">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_vertical"> <androidx.cardview.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
@@ -89,7 +82,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center_horizontal"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -98,53 +90,72 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Inicio de Sesión"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="32dp"/>
+                        android:text="Nombre de Usuario"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                     <EditText
-                        android:id="@+id/etUsername"
+                        android:id="@+id/editTextUsername"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Nombre de usuario"
-                        android:inputType="text"
-                        android:layout_marginBottom="16dp"/>
-
-                    <EditText
-                        android:id="@+id/etPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Contraseña"
-                        android:inputType="textPassword"
-                        android:layout_marginBottom="24dp"/>
-
-                    <Button
-                        android:id="@+id/btnLogin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Iniciar Sesión"
-                        android:layout_marginBottom="8dp"
-                        android:backgroundTint="@color/Header"
-                        android:textColor="@color/white"/>
+                        android:inputType="textPersonName"
+                        android:hint="Introduce el nombre de usuario" />
 
                     <TextView
-                        android:id="@+id/textViewRegister"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="¿No tienes cuenta? Regístrate aquí"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
-                        android:layout_marginBottom="8dp"
-                        android:clickable="true"
-                        android:focusable="true" />
+                        android:layout_marginTop="16dp"
+                        android:text="Email"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:hint="Introduce el email" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Contraseña"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <EditText
+                        android:id="@+id/editTextPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:hint="Introduce la contraseña" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="Rol (admin/usuario)"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    <EditText
+                        android:id="@+id/editTextRole"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:hint="Introduce el rol (admin o usuario)" />
+
+                    <Button
+                        android:id="@+id/buttonSaveUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="24dp"
+                        android:text="Guardar Usuario"
+                        android:backgroundTint="@color/Header"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
 
     </ScrollView>
 

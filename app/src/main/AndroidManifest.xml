@@ -41,6 +41,8 @@
         <activity android:name=".Activity.Promociones.PromocionesAdminActivity" android:exported="false"/>
         <activity android:name=".Activity.Promociones.AñadirEditarPromocionAdminActivity" android:exported="false"/>
         <activity android:name=".Activity.Comida.AñadirEditarComidaAdminActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginYRegister.UserAdminActivity" />
+        <activity android:name=".Activity.LoginYRegister.AñadirEditarUsuarioAdminActivity" />
     </application>
 
 </manifest>

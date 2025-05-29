@@ -11,9 +11,12 @@ class ActorManager (val dbHelper: DataBaseHelper){
 
     private val TAG = "ActorManager"
 
+    /*Funcion apra isnertar actores*/
     fun insertarActores(db: SQLiteDatabase, actores: List<Actor>): List<Long> {
         val ids = mutableListOf<Long>()
         try {
+            /*Llamos a la base de datos y indicamos el nombre que tienen los datos en ela rhcivo de dbhelper
+            * y leugo los datos de la tabla*/
             db.beginTransaction()
             actores.forEach { actor ->
                 val values = ContentValues().apply {
@@ -36,6 +39,7 @@ class ActorManager (val dbHelper: DataBaseHelper){
         return ids
     }
 
+    /*Funcion para isnertar los actores en la base de datos*/
     fun insertarActoresPrecargados(db: SQLiteDatabase) {
         val actores = listOf(
             /*actor Películas Semana 1*/
@@ -77,23 +81,28 @@ class ActorManager (val dbHelper: DataBaseHelper){
         insertarActores(db, actores)
     }
 
-
+    /*Funcion para obtener los actores por id de pelicula*/
     fun obtenerActoresesPorPeliculaId(peliculaId: Long): List<Actor> {
+        /*Creamso una lista de actores y le pasamos la tabla*/
         val actores = mutableListOf<Actor>()
+        /*Realizamos un llamamiento a la base de datos y hacemos una consulta obteniendo el id de la pelicula
+        * y llamando a la tabla de actores*/
         dbHelper.readableDatabase.use { db ->
             val cursor = db.rawQuery(
                 "SELECT * FROM ${DataBaseHelper.TABLE_ACTOR} WHERE ${DataBaseHelper.COLUMN_PELICULA_ID} = ?",
                 arrayOf(peliculaId.toString())
             )
             cursor.use {
+                /*Indicamos que coga el primer de cada variable declarada que contiene los datos almacenados en la base de datos*/
                 if (it.moveToFirst()) {
                     do {
                         val id = it.getInt(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_ACTOR_ID))
                         val nombre = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_ACTOR_NOMBRE))
                         val apellido = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_ACTOR_APELLIDO))
                         val peliculaId = it.getLong(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_PELICULA_ID))
-
+                        /*Variable la cual se le asigna la tabla de la base de datos y se le pasan dichos datos*/
                         val actor = Actor(id, nombre, apellido ,peliculaId)
+                        /*Añadimos los datos*/
                         actores.add(actor)
                     } while (it.moveToNext())
                 }

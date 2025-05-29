@@ -11,14 +11,17 @@ class DirectorManager(val dbHelper: DataBaseHelper) {
 
     private val TAG = "DirectorManager"
 
+    /*Funcion para insertar directores*/
     fun insertarDirectores(db: SQLiteDatabase, directores: List<Director>): List<Long> {
         val ids = mutableListOf<Long>()
         try {
+            /*Llamos a la base de datos y le pasamos los datos de la tabla de la base de datos
+            * y los del archivo gestor d ela base de datos*/
             db.beginTransaction()
             directores.forEach { director ->
                 val values = ContentValues().apply {
                     put(DataBaseHelper.COLUMN_DIRECTOR_NOMBRE, director.nombre)
-                    put(DataBaseHelper.COLUMN_DIRECTOR_APELLIDO, director.apellido) // Añadido el apellido
+                    put(DataBaseHelper.COLUMN_DIRECTOR_APELLIDO, director.apellido)
                     put(DataBaseHelper.COLUMN_PELICULAID, director.peliculaId)
                 }
                 val id = db.insert(DataBaseHelper.TABLE_DIRECTOR, null, values)
@@ -36,6 +39,7 @@ class DirectorManager(val dbHelper: DataBaseHelper) {
         return ids
     }
 
+    /*Funcion para isnertar los directores en la base de datos*/
     fun insertarDirectoresPrecargados(db: SQLiteDatabase) {
         val directores = listOf(
             /*Directores Películas Semana 1*/
@@ -77,13 +81,19 @@ class DirectorManager(val dbHelper: DataBaseHelper) {
         insertarDirectores(db, directores)
     }
 
+    /*Obtenemos los directores por el id de la pelicula*/
     fun obtenerDirectoresPorPeliculaId(peliculaId: Long): List<Director> {
+        /*Creamos una lista de directores*/
         val directores = mutableListOf<Director>()
+        /*Llamamos a la base de datos*/
         dbHelper.readableDatabase.use { db ->
+            /*Realizamos una consulta a la tabla de directores y obtenemos uss datos mediante el id asociado
+            * a la pelicula*/
             val cursor = db.rawQuery(
                 "SELECT * FROM ${DataBaseHelper.TABLE_DIRECTOR} WHERE ${DataBaseHelper.COLUMN_PELICULAID} = ?",
                 arrayOf(peliculaId.toString())
             )
+            /*Declaramos diferntes variables para asignarle los datos del archivo gestor de la base de datos*/
             cursor.use {
                 if (it.moveToFirst()) {
                     do {

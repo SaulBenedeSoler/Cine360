@@ -46,7 +46,7 @@
             android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginEnd="16dp"
-            android:contentDescription="Logo"
+            android:contentDescription="Ajustes"
             android:src="@drawable/ajsutes"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,24 +57,26 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPeliculas"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
+        android:layout_height="0dp"  android:padding="16dp"
         android:background="@color/fondo"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout"
-        app:layout_constraintBottom_toTopOf="@+id/footerIcons" />
+        app:layout_constraintBottom_toTopOf="@+id/footerIcons" /> <LinearLayout
+    android:id="@+id/footerIcons"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/Header"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
 
-    <LinearLayout
-        android:id="@+id/footerIcons"
-        android:layout_width="0dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#A8D9F2"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-    </LinearLayout>
+        android:text="Cine 360 - 2025"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

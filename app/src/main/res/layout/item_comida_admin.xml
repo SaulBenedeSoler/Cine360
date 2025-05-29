@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:layout_margin="16dp"  app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/black"
+    app:strokeWidth="2dp">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="16dp"> <TextView
         android:id="@+id/textViewTituloComidaAmin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,73 +23,70 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Título de la Comida" />
+        android:background="@color/Header" android:padding="16dp" tools:text="Título de la Comida" />
 
-    <ImageView
-        android:id="@+id/imagenComidaAdmin"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="Imagen de comida"
-        app:layout_constraintTop_toBottomOf="@id/textViewTituloComidaAmin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/ic_launcher_background" />
-
-    <TextView
-        android:id="@+id/textViewDescripcionComidaAdmin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/imagenComidaAdmin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Descripción de la comida" />
-
-    <TextView
-        android:id="@+id/textViewPrecioPromocion"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/textViewDescripcionComidaAdmin"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Precio: $0.00" />
-
-    <LinearLayout
-        android:id="@+id/linearLayoutBotonesComida"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/textViewPrecioPromocion"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/buttonEditComida"
+        <ImageView
+            android:id="@+id/imagenComidaAdmin"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp" android:scaleType="centerCrop"
+            android:contentDescription="Imagen de comida"
+            app:layout_constraintTop_toBottomOf="@id/textViewTituloComidaAmin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@drawable/ic_launcher_background"
+            app:layout_constraintWidth_percent="0.8" /> <TextView
+            android:id="@+id/textViewDescripcionComidaAdmin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Modificar"
-            android:backgroundTint="@color/Header"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginTop="16dp" android:layout_marginStart="8dp" android:textColor="@android:color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/imagenComidaAdmin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Descripción de la comida" />
 
-        <Button
-            android:id="@+id/buttonDeleteComida"
+        <TextView
+            android:id="@+id/textViewPrecioPromocion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Eliminar"
-            android:backgroundTint="@color/Header"
-            android:layout_marginStart="8dp" />
+            android:layout_marginTop="16dp" android:layout_marginStart="8dp" android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/textViewDescripcionComidaAdmin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Precio: $0.00" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayoutBotonesComida"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp" android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/textViewPrecioPromocion"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/buttonEditComida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Modificar"
+                android:backgroundTint="@color/Header"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/buttonDeleteComida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Eliminar"
+                android:backgroundTint="@color/Header"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

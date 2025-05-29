@@ -59,15 +59,21 @@
 
     <LinearLayout
         android:id="@+id/footerIcons"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#A8D9F2"
-        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/Header"
+        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cine 360 - 2025"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

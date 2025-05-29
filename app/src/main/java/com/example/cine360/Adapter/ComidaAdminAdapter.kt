@@ -21,14 +21,15 @@ class ComidaAdminAdapter(
     private val onDeleteClick: (Comida) -> Unit
 ) : RecyclerView.Adapter<ComidaAdminAdapter.ComidaViewHolder>() {
 
-    private val currentUserId: Int by lazy {  //ADDED THIS
+    private val currentUserId: Int by lazy {
         obtenerIdUsuarioActual(context)
     }
 
+    /*Asigno a cada variable un objeto xml*/
     inner class ComidaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTituloComidaAmin: TextView = itemView.findViewById(R.id.textViewTituloComidaAmin)
         val textViewDescripcionComidaAdmin: TextView = itemView.findViewById(R.id.textViewDescripcionComidaAdmin)
-        val textviewPrecioComida: TextView = itemView.findViewById(R.id.textviewPrecioComida)
+        val textviewPrecioComida: TextView = itemView.findViewById(R.id.textViewPrecioPromocion)
         val imagenComidaAdmin: ImageView = itemView.findViewById(R.id.imagenComidaAdmin)
         val buttonEditComida: Button = itemView.findViewById(R.id.buttonEditComida)
         val buttonDeleteComida: Button = itemView.findViewById(R.id.buttonDeleteComida)
@@ -37,7 +38,7 @@ class ComidaAdminAdapter(
             Glide.with(itemView.context).clear(imagenComidaAdmin)
         }
     }
-
+    /*Indico el archivo xml sobre el que vamos a trabajar*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComidaViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_comida_admin, parent, false)
@@ -47,18 +48,18 @@ class ComidaAdminAdapter(
     override fun onBindViewHolder(holder: ComidaViewHolder, position: Int) {
         val currentComida = comidaList[position]
         Log.d("ComidaAdminAdapter", "Procesando comida en posición $position: ${currentComida.nombre}")
-
+        /*Asigno a cada variable el dato de la base de datos corresoponiende*/
         holder.textViewTituloComidaAmin.text = currentComida.nombre
         holder.textViewDescripcionComidaAdmin.text = "Descripción: ${currentComida.descripcion}"
         holder.textviewPrecioComida.text = "Precio: ${currentComida.precio.toString()}"
-
+        /*Obtengo las imagenes de la base de datos*/
         val imageName = currentComida.Imagen
         val resourceId = context.resources.getIdentifier(
             imageName.substringBeforeLast("."),
             "drawable",
             context.packageName
         )
-
+        /*Muestro la imagen correspondiente a cada comida*/
         Glide.with(holder.itemView.context)
             .load(resourceId)
             .placeholder(R.drawable.ic_launcher_foreground)
@@ -66,25 +67,25 @@ class ComidaAdminAdapter(
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.imagenComidaAdmin)
-
+        /*Al pulsar sobre el vamos a la vista para modificar la comida*/
         holder.buttonEditComida.setOnClickListener {
             onEditClick(currentComida)
         }
-
+        /*Al pulsar sobre el eliminamos la comida seleccionada*/
         holder.buttonDeleteComida.setOnClickListener {
             onDeleteClick(currentComida)
         }
     }
 
     override fun getItemCount() = comidaList.size
-
+    /*Muestro la imgen seleccionada y la limpio en caso de nuevas imagenes*/
     override fun onViewRecycled(holder: ComidaViewHolder) {
         super.onViewRecycled(holder)
         Log.d("RECYCLER_DEBUG", "ViewHolder reciclado para posición: ${holder.adapterPosition}")
         Glide.with(holder.itemView.context).clear(holder.imagenComidaAdmin)
     }
-
-    private fun obtenerIdUsuarioActual(context: Context): Int { //ADDED THIS
+    /*Obtengo el id de usuario para verificar quie nes*/
+    private fun obtenerIdUsuarioActual(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)
         if (usuarioId == -1) {

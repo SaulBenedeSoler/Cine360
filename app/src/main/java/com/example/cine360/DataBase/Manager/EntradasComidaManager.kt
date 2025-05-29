@@ -9,6 +9,7 @@ import com.example.cine360.DataBase.Tablas.EntradaPromociones
 
 class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
 
+    /*Declaramos variables que mas adelante usaremos*/
     private val TABLE_ENTRADA_COMIDA = "entrada_comida"
     private val COLUMN_ENTRADA_ID = "id"
     private val COLUMN_ENTRADA_COMIDA_USUARIO_ID = "usuarioId"
@@ -18,6 +19,7 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
     private val COLUMN_ENTRADA_COMIDA_PRECIO_COMIDA = "precioComida"
     private val COLUMN_ENTRADA_COMIDA_IMAGEN_COMIDA = "imagenComida"
 
+    /*Funcion para crear entradas de comida y llamamos a los datos que contiene esa tabla*/
     fun crearEntradaComida(
         usuarioId: Int,
         comidaId: Int,
@@ -26,8 +28,9 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
         precioComida: Double,
         imagenComida: String?
     ): Long {
+        /*Instanciamos la base de datos*/
         val db = dbHelper.writableDatabase
-
+        /*Obtenemos los valores de la base de datos y lo asignamos a las variables anteriormente creadas*/
         val values = ContentValues().apply {
             put(COLUMN_ENTRADA_COMIDA_USUARIO_ID, usuarioId)
             put(COLUMN_ENTRADA_COMIDA_COMIDA_ID, comidaId)
@@ -36,42 +39,23 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
             put(COLUMN_ENTRADA_COMIDA_PRECIO_COMIDA, precioComida)
             put(COLUMN_ENTRADA_COMIDA_IMAGEN_COMIDA, imagenComida)
         }
-
+        /*Obtenemos el id de la tabla de entradas comida*/
         val id = db.insert(TABLE_ENTRADA_COMIDA, null, values)
-        Log.d("EntradasComidaManager", "Nueva entrada de comida creada con ID: $id")
         return id
     }
 
-    fun obtenerTodasLasEntradasComida(): List<EntradaComida> {
-        val entradasComida = mutableListOf<EntradaComida>()
-        val db = dbHelper.readableDatabase
 
-        val cursor = db.query(
-            TABLE_ENTRADA_COMIDA,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
-
-        while (cursor.moveToNext()) {
-            val entradaComida = cursorToEntradaComida(cursor)
-            entradasComida.add(entradaComida)
-        }
-
-        cursor.close()
-        return entradasComida
-    }
-
+    /*Funcion para obtener las entradas por usuario*/
     fun obtenerEntradasComidaPorUsuario(usuarioId: Int): List<EntradaComida> {
+        /*Variables de entradas para obtener una lista con todas las entradas*/
         val entradasComida = mutableListOf<EntradaComida>()
+
         val db = dbHelper.readableDatabase
-
+        /*Seleccionamos el id del usuario*/
         val selection = "${COLUMN_ENTRADA_COMIDA_USUARIO_ID} = ?"
+        /*Instnaciamso la base de datos*/
         val selectionArgs = arrayOf(usuarioId.toString())
-
+        /*Consultamos la tabla de entradas para obtener todas*/
         val cursor = db.query(
             TABLE_ENTRADA_COMIDA,
             null,
@@ -81,7 +65,7 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
             null,
             null
         )
-
+        /*Iteramos sobre la entrada para obtener todas*/
         while (cursor.moveToNext()) {
             val entradaComida = cursorToEntradaComida(cursor)
             entradasComida.add(entradaComida)
@@ -90,7 +74,7 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
         cursor.close()
         return entradasComida
     }
-
+    /*Funcion usada para llamar a los datos del archivo gestor de la base de datos y obtener la entrada*/
     private fun cursorToEntradaComida(cursor: Cursor): EntradaComida {
         val idIndex = cursor.getColumnIndex(COLUMN_ENTRADA_ID)
         val usuarioIdIndex = cursor.getColumnIndex(COLUMN_ENTRADA_COMIDA_USUARIO_ID)
@@ -108,6 +92,7 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
         val precioComida = if (preciocomidaIndex >= 0) cursor.getDouble(preciocomidaIndex) else 0.0
         val imagenComida = if (imagencomidaIndex >= 0) cursor.getString(imagencomidaIndex) else null
 
+        /*Devolvemos la entrada con todos lso datos ya registrados*/
         return EntradaComida(
             id = id,
             usuarioId = usuarioId,
@@ -118,14 +103,16 @@ class EntradasComidaManager(private val dbHelper: DataBaseHelper) {
             imagencomida = imagenComida
         )
     }
-
+    /*Funcion para eliminar la entrada*/
     fun eliminarEntradaComida(entradacomidaId: Int): Boolean {
+        /*Declaramos una instancia con la base de datos*/
         val db = dbHelper.writableDatabase
         db.beginTransaction()
         try {
+            /*Obtenemos el id de la entrada*/
             val selection = "${COLUMN_ENTRADA_ID} = ?"
             val selectionArgs = arrayOf(entradacomidaId.toString())
-
+            /*Realizamos una consulta para borra entrada de la tabla de la entrada*/
             val deletedRows = db.delete(TABLE_ENTRADA_COMIDA, selection, selectionArgs)
             Log.d("EntradasComidaManager", "Filas de Comida eliminadas: $deletedRows")
             db.setTransactionSuccessful()

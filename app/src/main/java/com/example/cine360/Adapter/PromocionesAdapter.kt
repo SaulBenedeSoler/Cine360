@@ -28,7 +28,7 @@ class PromocionesAdapter(
     private val entradasPromocionesManager: EntradasPromocionesManager by lazy {
         DataBaseHelper(context).let { EntradasPromocionesManager(it) }
     }
-
+    /*Declaramos diferentes variables las cuales obtienes objetos del archivo xml*/
     class PromocionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreTextView: TextView = itemView.findViewById(R.id.textViewNombrePromocion)
         val descripcionTextView: TextView = itemView.findViewById(R.id.textViewDescripcionProm)
@@ -36,19 +36,20 @@ class PromocionesAdapter(
         val comprarButton: Button = itemView.findViewById(R.id.buttonComprarPromocion)
         val imagenPromocion: ImageView = itemView.findViewById(R.id.imagenPromocion)
     }
-
+    /*Obtenemos y indicamos el archivo xml con el cual vamos a trabajar en este archivo*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PromocionViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_promociones, parent, false)
         return PromocionViewHolder(itemView)
     }
-
+    /*Obtenemos la posicion de todas las peliculas a partir de la lista de promociones y asignamos los datos a las diferentes variables
+    * anteriormente delcaradas*/
     override fun onBindViewHolder(holder: PromocionViewHolder, position: Int) {
         val promocion = listaPromociones[position]
         holder.nombreTextView.text = promocion.nombre
-        holder.descripcionTextView.text = promocion.descripcion  // Corrected this line
+        holder.descripcionTextView.text = promocion.descripcion
         holder.precioTextView.text = String.format(Locale.getDefault(), "%.2f €", promocion.precio)
-
+        /*Obtenemos las imagenes de las diferentes imagenes de las promociones*/
         val imageName = promocion.imagen
         val resourceId = context.resources.getIdentifier(
             imageName.substringBeforeLast("."),
@@ -68,6 +69,8 @@ class PromocionesAdapter(
             holder.imagenPromocion.setImageResource(R.drawable.error_imagen)
         }
 
+        /*Indicamos que si se pulsa el boton debe de obtener el id del usuario y en caso
+        * de que este no este registrado se le indica*/
         holder.comprarButton.setOnClickListener {
             val userId = obtenerIdUsuarioActual(holder.itemView.context)
 
@@ -79,7 +82,8 @@ class PromocionesAdapter(
                 ).show()
                 return@setOnClickListener
             }
-
+            /*Llamos al manager d epromociones y usamos la funcion para crear la entrada
+            * y llamamos a los datos de la tabla de la base de datos*/
             val entradaId = entradasPromocionesManager.crearEntrada(
                 userId,
                 promocion.id,
@@ -88,7 +92,7 @@ class PromocionesAdapter(
                 promocion.precio,
                 promocion.imagen
             )
-
+            /*Realizamos una comprobacion y mostramos si la promociones a sido adquirida y en caso de error se le indica al usuario*/
             if (entradaId > 0) {
                 Toast.makeText(holder.itemView.context, "Promoción adquirida", Toast.LENGTH_SHORT)
                     .show()
@@ -106,12 +110,12 @@ class PromocionesAdapter(
     }
 
     override fun getItemCount() = listaPromociones.size
-
+    /*Funcion para actualizar las promociones creando una nueva lista y indicandolo en la base de datos*/
     fun actualizarPromociones(nuevaLista: List<Promociones>) {
         listaPromociones = nuevaLista
         notifyDataSetChanged()
     }
-
+    /*Funcion para obtener el id del usuario*/
     private fun obtenerIdUsuarioActual(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)

@@ -1,7 +1,6 @@
 package com.example.cine360.Adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,7 @@ class PeliculaAdminAdapter(
     private val onDeleteClick: (Pelicula) -> Unit
 ) : RecyclerView.Adapter<PeliculaAdminAdapter.MovieViewHolder>() {
 
+    /*Declaramos las diferentes variables y les asignamos los objetos xml*/
     inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewTitle: TextView = itemView.findViewById(R.id.textViewTituloPelicula)
         val textViewDescription: TextView = itemView.findViewById(R.id.textViewDescripcion)
@@ -37,12 +37,15 @@ class PeliculaAdminAdapter(
         }
     }
 
+    /*Indicamos el objeto xml con el cual vamos a trabajar en este archivo y de esta forma podremos asignar diferentes
+    * objetos de este*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_pelicula_admin, parent, false)
         return MovieViewHolder(itemView)
     }
 
+    /*Llamamos a las variables anteriormente declaradas y le pasamos los datos de la base de datos*/
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val currentMovie = movieList[position]
         holder.textViewTitle.text = "Tiutlo: ${currentMovie.titulo}"
@@ -51,15 +54,14 @@ class PeliculaAdminAdapter(
         holder.textViewReleaseDate.text = "Fecha de lanzamiento: ${currentMovie.fechaLanzamiento}"
         holder.textViewDuration.text = "Duración: ${currentMovie.duracion} minutos"
         holder.textViewWeek.text = "Semana: ${currentMovie.semana}"
-
+        /*Obtenemos las imagenes de la base de datos*/
         val imageName = currentMovie.imagen.substringBeforeLast(".")
         val resourceId = context.resources.getIdentifier(
             imageName,
             "drawable",
             context.packageName
         )
-        Log.d("PeliculaAdapter", "Resource ID encontrado: $resourceId para imagen: $imageName")
-        Log.d("IMAGEN_DEBUG", "Intentando cargar con Glide el resource ID: $resourceId en el ImageView: ${holder.imageViewPelicula}")
+        /*Usamos el glide para mostrar las imagenes llamando los objetos xml*/
         Glide.with(holder.itemView.context)
             .load(resourceId)
             .placeholder(R.drawable.ic_launcher_foreground)
@@ -68,11 +70,11 @@ class PeliculaAdminAdapter(
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(holder.imageViewPelicula)
 
-
+        /*Indicamos que cuando se pulse el boton nos lleve a editar la pelicula*/
         holder.buttonEdit.setOnClickListener {
             onEditClick(currentMovie)
         }
-
+        /*Indicamos que si se pulsa el boton elimine la pelicula*/
         holder.buttonDelete.setOnClickListener {
             onDeleteClick(currentMovie)
         }

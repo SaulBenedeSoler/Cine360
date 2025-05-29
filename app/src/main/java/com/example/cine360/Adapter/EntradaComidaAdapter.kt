@@ -21,32 +21,36 @@ class EntradaComidaAdapter(
     private val entradasComidaManager: EntradasComidaManager
 ) : RecyclerView.Adapter<EntradaComidaAdapter.EntradaComidaViewHolder>() {
 
+
+    /*Interfaz que usamos para avisar de la eliminación de elementos de entradas de comida*/
     interface OnEntradaComidaDeletedListener {
         fun onEntradaComidaDeleted(entradaComida: EntradaComida)
     }
 
+    /*Se inicia un listener en nulo y luego tenemos la obtención del usuario*/
     private var listener: OnEntradaComidaDeletedListener? = null
     private val currentUserId: Int by lazy {
         obtenerIdUsuarioActual(context)
     }
-
+    /*Usamos esta funcion para cuando eliminemos una entrada de comida*/
     fun setOnEntradaComidaDeletedListener(listener: OnEntradaComidaDeletedListener) {
         this.listener = listener
     }
-
+    /*Llamamos al archivo xml sobre el que vamos a trabajar*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntradaComidaViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_entrada_comida, parent, false)
         return EntradaComidaViewHolder(view)
     }
-
+    /*Llamamos a la variable entradas comida que contiene una lista con todos los mnenus de comida*/
     override fun onBindViewHolder(holder: EntradaComidaViewHolder, position: Int) {
         val entradaComida = entradasComida[position]
         holder.bind(entradaComida)
     }
-
+    /*Función que usamos para obtener la cantidad de comidas que tenemos*/
     override fun getItemCount(): Int = entradasComida.size
-
+    /*Declaramos las varibales a las cuales les asignamos diferentes objetos xml del archivo xml declarado anteriormente
+    * */
     inner class EntradaComidaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val nombreComidaTextView: TextView = itemView.findViewById(R.id.tvNombreComida)
         private val descripcionComidaTextView: TextView =
@@ -54,13 +58,15 @@ class EntradaComidaAdapter(
         private val precioComidaTextView: TextView = itemView.findViewById(R.id.tvPrecioComida)
         private val imagenComidaImageView: ImageView = itemView.findViewById(R.id.ivImagenComida)
         private val eliminarButton: Button = itemView.findViewById(R.id.btnEliminarEntradaComida)
-
+        /*Llamamos a entradaCOmida que es la tabla que contiene los datos en la base de datos y asignamos a las variables
+        * anteriormente declaradas el contenido o datos de esto*/
         fun bind(entradaComida: EntradaComida) {
             nombreComidaTextView.text = "Comida: ${entradaComida.nombrecomida}"
             descripcionComidaTextView.text = entradaComida.descripcioncomida ?: "Sin descripción"
             precioComidaTextView.text =
                 "Precio: ${String.format("%.2f", entradaComida.preciocomida)} €"
-
+            /*Declaramos una varibale llamda imagen que contiene la imagen guardada en la base de datos y luego
+            * eliminamos el . */
             val imageName = entradaComida.imagencomida
             val resourceId = if (imageName != null) {
                 itemView.context.resources.getIdentifier(
@@ -71,7 +77,7 @@ class EntradaComidaAdapter(
             } else {
                 0
             }
-
+            /*Obtenemos la imagen de cada menu y lo mostramos*/
             if (resourceId != 0) {
                 Glide.with(itemView.context)
                     .load(resourceId)
@@ -83,7 +89,8 @@ class EntradaComidaAdapter(
                 Log.e("EntradaPromocionAdapter", "Resource not found: $imageName")
                 imagenComidaImageView.setImageResource(R.drawable.error_imagen)
             }
-
+            /*Indicamos que cuando se pulse el boton se elimine la entrada de comida, mediante la llamada al manager el cual
+            * realizar el llamamiento a la función de eliminarEntrtadaCOmida y lo hacemos pasandole el id de la comida*/
             eliminarButton.setOnClickListener {
                 val entradaComidaId = entradaComida.id
                 Log.d(
@@ -100,6 +107,7 @@ class EntradaComidaAdapter(
             }
         }
     }
+    /*Obtenemos el id del usuario para saber quien esta itneractuando*/
     private fun obtenerIdUsuarioActual(context: Context): Int {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val usuarioId = sharedPreferences.getInt("usuario_id", -1)

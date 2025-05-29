@@ -17,11 +17,12 @@ import com.example.cine360.DataBase.Tablas.Sala
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
+        /*Declaro el nombre de la base de datos y la version*/
         const val DATABASE_NAME = "cine360.db"
-        const val DATABASE_VERSION = 52
+        const val DATABASE_VERSION = 57
         private const val tag = "DataBaseHelper"
 
-        /*Tabla Usuarios*/
+        /*Creo la Tabla Usuarios y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_USERS = "users"
         const val COLUMN_ID = "id"
         const val COLUMN_USERNAME = "username"
@@ -30,7 +31,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_NOMBRE = "nombre"
         const val COLUMN_EMAIL = "email"
 
-        /*Tabla Pelicula*/
+        /*Creo la Tabla Pelicula y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_PELICULA = "pelicula"
         const val COLUMN_Pelicula_ID = "pelicula_id"
         const val COLUM_TITULO = "titulo"
@@ -42,26 +43,26 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_TRAILER = "pelicula_trailer"
         const val COLUMN_SEMANA = "semana"
 
-        /*Tabla Director*/
+        /*Creo la Tabla Director y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_DIRECTOR = "director"
         const val COLUMN_DIRECTOR_ID = "director_id"
         const val COLUMN_DIRECTOR_NOMBRE = "director_nombre"
         const val COLUMN_DIRECTOR_APELLIDO = "director_apellido"
         const val COLUMN_PELICULAID = "pelicula_id"
 
-        /*Tabla Actor*/
+        /*Creo la Tabla Actor y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_ACTOR = "actor"
         const val COLUMN_ACTOR_ID = "actor_id"
         const val COLUMN_ACTOR_NOMBRE = "actor_nombre"
         const val COLUMN_ACTOR_APELLIDO = "actor_apellido"
         const val COLUMN_PELICULA_ID = "pelicula_id"
 
-        /*Tabla Semana*/
+        /*Creo la Tabla Semanas y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_SEMANA = "semana"
         const val COLUMN_SEMANA_ID = "semana_id"
         const val COLUMN_SEMANA_NOMBRE = "semana_nombre"
 
-        /*Tabla Sala*/
+        /*Creo la Tabla Salas y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_SALA = "sala"
         const val COLUMN_SALA_ID = "sala_id"
         const val COLUMN_SALA_NOMBRE = "sala_nombre"
@@ -71,7 +72,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_HORARIO = "horario"
         const val COLUMN_PELICULA = "peliculaId"
 
-        /*Tabla Promociones*/
+        /*Creo la Tabla Promociones y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_PROMOCIONES = "promociones"
         const val COLUMN_PROMOCION_ID = "promocion_id"
         const val COLUMN_PROMOCION_NOMBRE = "promocion_nombre"
@@ -79,7 +80,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_PROMOCION_IMAGEN = "promocion_imagen"
         const val COLUMN_PROMOCION_PRECIO = "promocion_precio"
 
-        /*Tabla comida*/
+        /*Creo la Tabla Comida y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_COMIDA = "comida"
         const val COLUMN_COMIDA_ID = "comida_id"
         const val COLUMN_COMIDA_NOMBRE = "comida_nombre"
@@ -87,7 +88,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_COMIDA_DESCRIPCION = "comida_descripcion"
         const val COLUMN_COMIDA_PRECIO = "comida_precio"
 
-        /*Tabla Entrada*/
+        /*Creo la Tabla Entrada y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_ENTRADA = "entrada"
         const val COLUMN_ENTRADA_ID = "entrada_id"
         const val COLUMN_USERID = "user_id"
@@ -98,7 +99,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_SALA_HORA = "sala_horario"
         const val COLUMN_PELICULA_NOMBRE = "nombrePelicula"
 
-        /*Tabla EntradaPromociones*/
+        /*Creo la Tabla Entrada Promociones y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_ENTRADA_PROMOCIONES = "entrada_promociones"
         const val COLUMN_ENTRADA_PROMOCIONES_ID = "id"
         const val COLUMN_ENTRADA_PROMOCIONES_USUARIO_ID = "usuarioId"
@@ -108,7 +109,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         const val COLUMN_ENTRADA_PROMOCIONES_PRECIO_PROMOCION = "precioPromocion"
         const val COLUMN_ENTRADA_PROMOCIONES_IMAGEN_PROMOCION = "imagenPromocion"
 
-        /*Tabla EntradaPromociones*/
+        /*Creo la Tabla Entrada Comida y le asigno el nombre correspondiente al archivo de tabla de este*/
         const val TABLE_ENTRADA_COMIDA = "entrada_comida"
         const val COLUMN_ENTRADA_COMIDA_ID = "id"
         const val COLUMN_ENTRADA_COMIDA_USUARIO_ID = "usuarioId"
@@ -121,7 +122,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
 
     }
-
+    /*Funcion para crear las tablas*/
     override fun onCreate(db: SQLiteDatabase) {
         Log.d(tag, "Iniciando creación de todas las tablas")
 
@@ -263,35 +264,34 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             Log.e(tag, "Error al crear tablas: ${e.message}")
             e.printStackTrace()
         }
-
+        /*Llamo al manager de peliculas y le paso la funcion para isnertar los datos de las peliculas*/
         val peliculaManager = PeliculaManager(this)
         peliculaManager.insertarPeliculasPrecargadas(db)
-
+        /*Llamo al manager de peliculas y le paso la funcion para isnertar los datos de los actores*/
         val actorManager = ActorManager(this)
         actorManager.insertarActoresPrecargados(db)
-
+        /*Llamo al manager de peliculas y le paso la funcion para isnertar los datos de los directores*/
         val directorManager = DirectorManager(this)
         directorManager.insertarDirectoresPrecargados(db)
-
+        /*Asigno una semana por pelicula*/
         peliculaManager.asignarSemanasAPeliculas(db)
-
+        /*Llamo al manager de sala*/
         val salaManager = SalaManager(this)
-
+        /*Obtengo la pelicula desde la base de datos*/
         val peliculas = peliculaManager.obtenerPeliculaConDb(db)
-
+        /*Llamo al manager de peliculas y le paso la funcion para isnertar los datos de las Promociones*/
         val promocionesManager = PromocionesManager(this)
         promocionesManager.insertarPromocionesPrecargadas(db)
-
-
-
+        /*Llamo al manager de peliculas y le paso la funcion para isnertar los datos de las Comidas*/
         val comidaManager= ComidaManager(this)
         comidaManager.insertarCOmidaPrecargada(db)
-
+        /*Creo las salas para las peliculas*/
         for (pelicula in peliculas) {
             salaManager.crearSalaParaPelicula(db, pelicula)
         }
     }
-
+    /*Inserto un administrador por defecto mediante la declaracion
+    * de los datos necesarios para esto y insertandolo a la base de datos posteriormente*/
     private fun insertDefaultAdmin(db: SQLiteDatabase) {
         try {
             val values = ContentValues()
@@ -316,6 +316,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         }
     }
 
+    /*Funcion usada para actualizar la base de datos y en caso de aumentar la version eliminar toda
+    * informacion de las tablas para insertar la nueva*/
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         Log.d(tag, "Actualizando base de datos de versión $oldVersion a $newVersion")
 

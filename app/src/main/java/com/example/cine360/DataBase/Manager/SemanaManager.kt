@@ -8,38 +8,19 @@ import com.example.cine360.DataBase.DataBaseHelper
 class SemanaManager(private val dbHelper: DataBaseHelper) {
     private val TAG = "SemanaManager"
 
-    fun insertarSemanasPrecargadas(db: SQLiteDatabase) {
-        val semanas = listOf("Semana 1", "Semana 2", "Semana 3", "Semana 4")
 
-        try {
-            semanas.forEach { semana ->
-                val values = ContentValues()
-                values.put(DataBaseHelper.COLUMN_SEMANA_NOMBRE, semana)
-                val resultado = db.insert(DataBaseHelper.TABLE_SEMANA, null, values)
-
-                if (resultado == -1L) {
-                    Log.e(TAG, "Error al insertar semana: $semana")
-                } else {
-                    Log.d(TAG, "Semana insertada correctamente: $semana con ID: $resultado")
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error al insertar semanas precargadas: ${e.message}")
-            e.printStackTrace()
-        }
-    }
-
+    /*Funcion para obtener todas las semanas de la base d edatos*/
     fun obtenerTodasLasSemanas(): List<String> {
         val db = dbHelper.readableDatabase
         val semanas = mutableListOf<String>()
-
+        /*Realizamos una ocnsulta query para obtener el nombre de cada semana*/
         try {
             val cursor = db.query(
                 DataBaseHelper.TABLE_SEMANA,
                 arrayOf(DataBaseHelper.COLUMN_SEMANA_NOMBRE),
                 null, null, null, null, null
             )
-
+            /*Cogemos l nombre de cada una y lo añadimos al objeto semanas el cual esta unido a la base de datos*/
             cursor.use {
                 if (it.moveToFirst()) {
                     do {

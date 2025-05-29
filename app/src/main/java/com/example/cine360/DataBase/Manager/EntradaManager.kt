@@ -9,6 +9,8 @@ import com.example.cine360.DataBase.Tablas.Sala
 
 class EntradaManager(private val dbHelper: DataBaseHelper) {
 
+
+    /*Funcion para crear la entrada*/
     fun crearEntrada(
         userId: Int,
         peliculaId: Int,
@@ -18,8 +20,9 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
         horario: String,
         nombrePelicula: String
     ): Long {
+        /*Obtenemos instancia de la base de datos*/
         val db = dbHelper.writableDatabase
-
+        /*Obtenemos un objeto para almacenar los diferentes valores que vamos a almacenar en la base de datos*/
         val values = ContentValues().apply {
             put(DataBaseHelper.COLUMN_USERID, userId)
             put(DataBaseHelper.COLUMN_PELI_ID, peliculaId)
@@ -29,16 +32,17 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
             put(DataBaseHelper.COLUMN_SALA_HORA, horario)
             put(DataBaseHelper.COLUMN_PELICULA_NOMBRE, nombrePelicula)
         }
-
+        /*Obtenemos el id de la entrada*/
         val id = db.insert(DataBaseHelper.TABLE_ENTRADA, null, values)
         Log.d("EntradaManager", "Nueva entrada creada con ID: $id")
         return id
     }
-
+    /*Funcion para obtener todas las entrads*/
     fun obtenerTodasLasEntradas(): List<Entrada> {
+        /*Creamos una entrada para almacenar las entradas*/
         val entradas = mutableListOf<Entrada>()
         val db = dbHelper.readableDatabase
-
+        /*Hacemos una consulta para obtener todas las entradas de la tabla*/
         val cursor = db.query(
             DataBaseHelper.TABLE_ENTRADA,
             null,
@@ -48,7 +52,7 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
             null,
             null
         )
-
+        /*Itermos sobre el cursor para leer cada fila*/
         while (cursor.moveToNext()) {
             val entrada = cursorToEntrada(cursor)
             entradas.add(entrada)
@@ -57,14 +61,16 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
         cursor.close()
         return entradas
     }
-
+    /*Funcion para obtener las entradas por usuario*/
     fun obtenerEntradasPorUsuario(userId: Int): List<Entrada> {
+        /*Variables de entradas para obtener una lista con todas las entradas*/
         val entradas = mutableListOf<Entrada>()
+        /*Instnaciamso la base de datos*/
         val db = dbHelper.readableDatabase
-
+        /*Seleccionamos el id del usuario*/
         val selection = "${DataBaseHelper.COLUMN_USERID} = ?"
         val selectionArgs = arrayOf(userId.toString())
-
+        /*Consultamos la tabla de entradas para obtener todas*/
         val cursor = db.query(
             DataBaseHelper.TABLE_ENTRADA,
             null,
@@ -74,7 +80,7 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
             null,
             null
         )
-
+        /*Iteramos sobre la entrada para obtener todas*/
         while (cursor.moveToNext()) {
             val entrada = cursorToEntrada(cursor)
             entradas.add(entrada)
@@ -83,7 +89,7 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
         cursor.close()
         return entradas
     }
-
+    /*Funcion usada para llamar a los datos del archivo gestor de la base de datos y obtener la entrada*/
     private fun cursorToEntrada(cursor: Cursor): Entrada {
         val idIndex = cursor.getColumnIndex(DataBaseHelper.COLUMN_ENTRADA_ID)
         val userIdIndex = cursor.getColumnIndex(DataBaseHelper.COLUMN_USERID)
@@ -103,6 +109,7 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
         val horario = if (horarioIndex >= 0) cursor.getString(horarioIndex) else null
         val nombrePelicula = if (nombrePeliculaIndex >= 0) cursor.getString(nombrePeliculaIndex) else ""
 
+        /*Obtenemos los datos de la sala*/
         val sala = Sala(
             id = 0,
             nombre = salaNombre,
@@ -112,7 +119,7 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
             precio = 0.0,
             peliculaId = peliculaId.toLong().toInt()
         )
-
+        /*Devolvemos la entrada con todos lso datos ya registrados*/
         return Entrada(
             id = id,
             userId = userId,
@@ -126,16 +133,17 @@ class EntradaManager(private val dbHelper: DataBaseHelper) {
     }
 
 
-
+    /*Funcion para eliminar la entrada*/
     fun eliminarEntrada(entradaId: Int): Boolean {
+        /*Declaramos una instancia con la base de datos*/
         val db = dbHelper.writableDatabase
         db.beginTransaction()
         try {
+            /*Obtenemos el id de la entrada*/
             val selection = "${DataBaseHelper.COLUMN_ENTRADA_ID} = ?"
             val selectionArgs = arrayOf(entradaId.toString())
-
+            /*Realizamos una consulta para borra entrada de la tabla de la entrada*/
             val deletedRows = db.delete(DataBaseHelper.TABLE_ENTRADA, selection, selectionArgs)
-            Log.d("EntradaManager", "Filas eliminadas: $deletedRows")
             db.setTransactionSuccessful()
             return deletedRows > 0
         } catch (e: Exception) {

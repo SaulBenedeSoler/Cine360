@@ -10,21 +10,24 @@ import com.example.cine360.DataBase.Tablas.Comida
 
 class ComidaAdminManager(context: Context) {
 
+    /*Declaracion de variables y creacion de instancia para comunicrse con la base d edatos*/
     private val dbHelper = DataBaseHelper(context)
     private val database: SQLiteDatabase = dbHelper.writableDatabase
 
+    /*Funcion para cerrar conexion con la base de datos*/
     fun close() {
         dbHelper.close()
     }
-
+    /*Funcion para añadir comida*/
     fun addComida(comida: Comida): Long {
+        /*Llamamos a los daos del archivo base de datos y a los datos de la tabla de comida*/
         val values = ContentValues().apply {
             put(DataBaseHelper.COLUMN_COMIDA_NOMBRE, comida.nombre)
             put(DataBaseHelper.COLUMN_COMIDA_DESCRIPCION, comida.descripcion)
             put(DataBaseHelper.COLUMN_COMIDA_PRECIO, comida.precio)
             put(DataBaseHelper.COLUMN_COMIDA_IMAGEN, comida.Imagen)
         }
-
+        /*Indicamos que inserte una nueva fila llamando a la tabla comida*/
         val newRowId = database.insert(DataBaseHelper.TABLE_COMIDA, null, values)
         if (newRowId == -1L) {
             Log.e("ComidaAdminManager", "Error al insertar la comida: ${comida.nombre}")
@@ -34,6 +37,8 @@ class ComidaAdminManager(context: Context) {
         return newRowId
     }
 
+    /*Funcion para obtener toda la comida mediante la llamada
+    * a los datos del archivo DBHleper*/
     fun getAllComida(): MutableList<Comida> {
         val comidaList = mutableListOf<Comida>()
         val projection = arrayOf(
@@ -43,7 +48,7 @@ class ComidaAdminManager(context: Context) {
             DataBaseHelper.COLUMN_COMIDA_PRECIO,
             DataBaseHelper.COLUMN_COMIDA_IMAGEN
         )
-
+        /*Llamamiento a la base d edatos*/
         val cursor: Cursor = database.query(
             DataBaseHelper.TABLE_COMIDA,
             projection,
@@ -54,6 +59,7 @@ class ComidaAdminManager(context: Context) {
             null
         )
 
+        /*Llamamos a los difernetes datos del archivo gestor de base de datos*/
         cursor.use {
             while (it.moveToNext()) {
                 val id = it.getLong(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_COMIDA_ID)).toInt()
@@ -61,7 +67,7 @@ class ComidaAdminManager(context: Context) {
                 val descripcion = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_COMIDA_DESCRIPCION))
                 val precio = it.getDouble(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_COMIDA_PRECIO))
                 val imagen = it.getString(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_COMIDA_IMAGEN))
-
+                /*Llamamos a la tabla y le pasamos los datos necesarios para insertar y después pasamos esa lista para añadirla*/
                 val comida = Comida(id, nombre, imagen, descripcion, precio)
                 comidaList.add(comida)
             }
@@ -69,6 +75,8 @@ class ComidaAdminManager(context: Context) {
         return comidaList
     }
 
+    /*FUncion para obtenerla comida por id mediante el llamamiento a la base de datos
+    * y obtencion de datos de esto mediante el uso del id*/
     fun getComidaById(comidaId: Int): Comida? {
         val projection = arrayOf(
             DataBaseHelper.COLUMN_COMIDA_ID,
@@ -80,7 +88,7 @@ class ComidaAdminManager(context: Context) {
 
         val selection = "${DataBaseHelper.COLUMN_COMIDA_ID} = ?"
         val selectionArgs = arrayOf(comidaId.toString())
-
+        /*Hago una consulta a la tabla de la base de datos*/
         val cursor: Cursor = database.query(
             DataBaseHelper.TABLE_COMIDA,
             projection,
@@ -90,7 +98,7 @@ class ComidaAdminManager(context: Context) {
             null,
             null
         )
-
+        /*Indicamos que coga desde el primer menu y obteniendo todos los datos de la tabla*/
         cursor.use {
             if (it.moveToFirst()) {
                 val id = it.getLong(it.getColumnIndexOrThrow(DataBaseHelper.COLUMN_COMIDA_ID)).toInt()
@@ -105,6 +113,8 @@ class ComidaAdminManager(context: Context) {
         return null
     }
 
+    /*Funcion para actualizar la comida y llamaos a los datos del archivo gestor de la base de datos
+    * y a los datos de la tabla de la base de datos*/
     fun updateComida(comida: Comida): Int {
         val values = ContentValues().apply {
             put(DataBaseHelper.COLUMN_COMIDA_NOMBRE, comida.nombre)
@@ -113,6 +123,7 @@ class ComidaAdminManager(context: Context) {
             put(DataBaseHelper.COLUMN_COMIDA_PRECIO, comida.precio)
         }
 
+        /*Realizamos la obtencion del id de ka comida y obtenemos  los datos de la tabla*/
         val selection = "${DataBaseHelper.COLUMN_COMIDA_ID} = ?"
         val selectionArgs = arrayOf(comida.id.toString())
 
@@ -131,10 +142,12 @@ class ComidaAdminManager(context: Context) {
         return rowsAffected
     }
 
+    /*Funcion para eliminar la comida*/
     fun deleteComida(comidaId: Int): Int {
+        /*Obtenemos el id de la comida*/
         val selection = "${DataBaseHelper.COLUMN_COMIDA_ID} = ?"
         val selectionArgs = arrayOf(comidaId.toString())
-
+        /*Indicamos que borre la fila de la tabla*/
         val rowsDeleted = database.delete(
             DataBaseHelper.TABLE_COMIDA,
             selection,

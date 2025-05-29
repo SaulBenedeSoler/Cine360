@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondo"
-    tools:context=".Activity.Promociones.PromocionesAdminActivity">
+    tools:context=".Activity.LoginYRegister.UserAdminActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/headerLayout"
+        android:id="@+id/headerLayoutUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#A8D9F2"
@@ -17,17 +17,18 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/textViewTitle"
+            android:id="@+id/textViewTitleUsers"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Administrar Promociones"
+            android:text="Administrar Usuarios"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/imageAjustes"
             app:layout_constraintStart_toEndOf="@+id/imageViewLogo"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/imageViewLogo"
@@ -39,7 +40,7 @@
             android:src="@drawable/logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageView
             android:id="@+id/imageAjustes"
@@ -51,18 +52,18 @@
             android:src="@drawable/ajsutes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewTitle" />
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewPromociones"
+        android:id="@+id/recyclerviewUsers"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_promociones_admin"
-        app:layout_constraintTop_toBottomOf="@+id/headerLayout"
+        tools:listitem="@layout/item_user"
+        app:layout_constraintTop_toBottomOf="@+id/headerLayoutUsers"
         app:layout_constraintBottom_toTopOf="@+id/footerLayout" /> <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fabAddPromociones"
+    android:id="@+id/fabAddUser"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
